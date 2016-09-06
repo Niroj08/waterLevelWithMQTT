@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
         editPort = (EditText) findViewById(R.id.editPort);
         editTopic = (EditText) findViewById(R.id.editTopic);
         editMessage = (EditText) findViewById(R.id.editMessage);
-git
+
         //establish connection to MQTT
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
