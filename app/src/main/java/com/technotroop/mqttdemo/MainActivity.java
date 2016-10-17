@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
                 subscribeMessage(topic);
             }
         });
-
-
     }
 
     private void subscribeMessage(String topic) {

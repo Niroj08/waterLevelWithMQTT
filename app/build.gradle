@@ -20,13 +20,14 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.1'
-
     //mqtt
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-    compile ('org.eclipse.paho:org.eclipse.paho.android.service:1.1.0') {
+    compile('org.eclipse.paho:org.eclipse.paho.android.service:1.1.0') {
         exclude module: 'support-v4'
     }
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.android.support:design:24.0.0-alpha2'
+    compile 'com.android.support:appcompat-v7:24.0.0-alpha2'
 }
