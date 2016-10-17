@@ -5,4 +5,7 @@
     <string name="phone">Phone Number</string>
     <string name="email">Email ID</string>
     <string name="register">Register</string>
+    <string name="tourTitle"><![CDATA[Connect & Control]]></string>
+    <string name="tourMessage"><![CDATA[Connect to your device\n&\ncontrol it from anywhere anyplace.]]></string>
+    <string name="beginTour">Begin\nTour</string>
 </resources>
