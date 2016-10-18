@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,13 +19,18 @@ import com.nineoldandroids.animation.Animator;
 
 public class UserRegisterActivity extends AppCompatActivity {
 
-    RelativeLayout buttonEffect;
+    private RelativeLayout buttonEffect;
 
-    TextView tourTitle, tourMessage;
-    ImageView imgWaterTank, imgRouter, imgIOS, imgAndroid;
-    View linetitle;
+    private TextView tourTitle, tourMessage, btnMore, btnRegister;
+    private EditText emailId, firstName, lastName, phoneNo;
+    private ImageView imgWaterTank, imgRouter, imgIOS, imgAndroid, imgNotificationIOS, imgNotificationAndroid;
+    private View linetitle;
 
-    Button btnBeginTour;
+    private Button btnBeginTour;
+
+    private VerticalProgressBar progressBarWater;
+    private UserRegisterController userRegisterController;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +39,30 @@ public class UserRegisterActivity extends AppCompatActivity {
 
         tourTitle = (TextView) findViewById(R.id.textTourTitle);
         tourMessage = (TextView) findViewById(R.id.textTourMessage);
+        btnMore = (TextView) findViewById(R.id.btnMore);
+        btnRegister = (TextView) findViewById(R.id.btnRegister);
+
+        emailId = (EditText) findViewById(R.id.editTextEmail);
+        firstName = (EditText) findViewById(R.id.editTextFirstName);
+        lastName = (EditText) findViewById(R.id.editTextLastName);
+        phoneNo = (EditText) findViewById(R.id.editTextPhone);
 
         imgWaterTank = (ImageView) findViewById(R.id.imgWaterTank);
         imgRouter = (ImageView) findViewById(R.id.imgRouter);
         imgIOS = (ImageView) findViewById(R.id.imgDeviceIOS);
         imgAndroid = (ImageView) findViewById(R.id.imgDeviceAndroid);
+        imgNotificationAndroid = (ImageView) findViewById(R.id.imgNotificationAndroid);
+        imgNotificationIOS = (ImageView) findViewById(R.id.imgNotificationIOS);
 
         linetitle = findViewById(R.id.lineTitle);
 
         btnBeginTour = (Button) findViewById(R.id.btnBeginTour);
         buttonEffect = (RelativeLayout) findViewById(R.id.viewEffect);
+
+        progressBarWater = (VerticalProgressBar) findViewById(R.id.progressWater);
+
+        userRegisterController = new UserRegisterController();
+        user = new User();
 
         Animation fadeOut = new AlphaAnimation(1, 0);
         fadeOut.setDuration(1000);
@@ -148,8 +168,34 @@ public class UserRegisterActivity extends AppCompatActivity {
                                                                                                             @Override
                                                                                                             public void onAnimationEnd(Animator animation) {
                                                                                                                 tourMessage.setVisibility(View.VISIBLE);
+
                                                                                                                 YoYo.with(Techniques.FadeIn)
                                                                                                                         .duration(1000)
+                                                                                                                        .withListener(new Animator.AnimatorListener() {
+                                                                                                                            @Override
+                                                                                                                            public void onAnimationStart(Animator animation) {
+                                                                                                                            }
+
+                                                                                                                            @Override
+                                                                                                                            public void onAnimationEnd(Animator animation) {
+                                                                                                                                btnMore.setVisibility(View.VISIBLE);
+
+                                                                                                                                YoYo.with(Techniques.RubberBand)
+                                                                                                                                        .duration(1500)
+                                                                                                                                        .playOn(btnMore);
+
+                                                                                                                            }
+
+                                                                                                                            @Override
+                                                                                                                            public void onAnimationCancel(Animator animation) {
+
+                                                                                                                            }
+
+                                                                                                                            @Override
+                                                                                                                            public void onAnimationRepeat(Animator animation) {
+
+                                                                                                                            }
+                                                                                                                        })
                                                                                                                         .playOn(tourMessage);
                                                                                                             }
 
@@ -229,5 +275,110 @@ public class UserRegisterActivity extends AppCompatActivity {
                         .playOn(tourTitle);
             }
         });
+
+        btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                btnMore.setVisibility(View.GONE);
+
+                tourMessage.setText(getString(R.string.tourMessage2));
+
+                YoYo.with(Techniques.SlideInRight)
+                        .duration(1500)
+                        .withListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                imgNotificationAndroid.setVisibility(View.VISIBLE);
+                                imgNotificationIOS.setVisibility(View.VISIBLE);
+
+                                YoYo.with(Techniques.Flash)
+                                        .duration(1000)
+                                        .withListener(new Animator.AnimatorListener() {
+                                            @Override
+                                            public void onAnimationStart(Animator animation) {
+                                                progressBarWater.setVisibility(View.VISIBLE);
+
+                                                for (int i = 0; i < 75; i++) {
+                                                    progressBarWater.setProgress(i);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+
+                                                YoYo.with(Techniques.Flash)
+                                                        .duration(1000)
+                                                        .playOn(imgNotificationIOS);
+
+                                            }
+
+                                            @Override
+                                            public void onAnimationCancel(Animator animation) {
+
+                                            }
+
+                                            @Override
+                                            public void onAnimationRepeat(Animator animation) {
+
+                                            }
+                                        })
+                                        .playOn(imgNotificationAndroid);
+
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        })
+                        .playOn(tourMessage);
+            }
+        });
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                user.setEmail(emailId.getText().toString());
+                user.setFirstName(firstName.getText().toString());
+                user.setLastName(lastName.getText().toString());
+                user.setPhoneNumber(phoneNo.getText().toString());
+
+                if (userRegisterController.isDataValidate(user) == UserValidation.TRUE) {
+                    //TODO:proceed to service
+                    userRegisterController.registerUser(user);
+
+                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_EMAIL) {
+                    emailId.setError(getString(R.string.required));
+                    return;
+                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_FIRSTNAME) {
+                    firstName.setError(getString(R.string.required));
+                    return;
+                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_LASTNAME) {
+                    lastName.setError(getString(R.string.required));
+                    return;
+                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_PHONE) {
+                    phoneNo.setError(getString(R.string.required));
+                    return;
+                } else if (userRegisterController.isDataValidate(user) == UserValidation.INVALID_EMAIL) {
+                    emailId.setError(getString(R.string.invalidEmail));
+                    return;
+                } else if (userRegisterController.isDataValidate(user) == UserValidation.INVALID_PHONE) {
+                    phoneNo.setError(getString(R.string.invalidePhone));
+                    return;
+                }
+            }
+        });
     }
+
 }

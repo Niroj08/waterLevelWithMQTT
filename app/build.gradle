@@ -32,7 +32,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0-alpha2'
 
 
+    //animation library support
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.easing:library:1.0.1@aar'
     compile 'com.daimajia.androidanimations:library:1.1.3@aar'
+
+    //retrofit support
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 }
