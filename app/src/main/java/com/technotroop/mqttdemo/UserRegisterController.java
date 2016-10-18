@@ -2,10 +2,6 @@ package com.technotroop.mqttdemo;
 
 import android.text.TextUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.net.SocketTimeoutException;
 
 import okhttp3.ResponseBody;
