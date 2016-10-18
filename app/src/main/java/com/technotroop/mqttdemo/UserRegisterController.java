@@ -18,6 +18,11 @@ import retrofit2.Response;
  */
 public class UserRegisterController {
     private UserRegisterService userRegisterService;
+    UserRegisterInterface userRegister;
+
+    public UserRegisterController(UserRegisterInterface userRegisterInterface) {
+        userRegister = userRegisterInterface;
+    }
 
     public UserValidation isDataValidate(User user) {
 
@@ -39,6 +44,7 @@ public class UserRegisterController {
 
     public void registerUser(User user) {
         userRegisterService = new UserRegisterService();
+        userRegister.onSuccessUserRegister();
 
         userRegisterService.userRegister(new Callback<ResponseBody>() {
             @Override

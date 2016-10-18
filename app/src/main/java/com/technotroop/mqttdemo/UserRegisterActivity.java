@@ -62,7 +62,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
         progressBarWater = (VerticalProgressBar) findViewById(R.id.progressWater);
 
-        userRegisterController = new UserRegisterController();
+        userRegisterController = new UserRegisterController(this);
         user = new User();
 
         Animation fadeOut = new AlphaAnimation(1, 0);
