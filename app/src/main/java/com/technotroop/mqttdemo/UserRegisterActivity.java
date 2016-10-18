@@ -1,5 +1,6 @@
 package com.technotroop.mqttdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,7 +18,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.nineoldandroids.animation.Animator;
 
-public class UserRegisterActivity extends AppCompatActivity {
+public class UserRegisterActivity extends AppCompatActivity implements UserRegisterInterface {
 
     private RelativeLayout buttonEffect;
 
@@ -381,4 +382,23 @@ public class UserRegisterActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onSuccessUserRegister() {
+        launchNextActivity(WaterLevelActivity.class);
+    }
+
+    @Override
+    public void onErrorUserRegister() {
+
+    }
+
+    @Override
+    public void onErrorNoConnection() {
+
+    }
+
+    private void launchNextActivity(Class calledClass) {
+        Intent intent = new Intent(this, calledClass);
+        startActivity(intent);
+    }
 }
