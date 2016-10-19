@@ -1,4 +1,4 @@
-package com.technotroop.mqttdemo.service;
+package com.technotroop.mqttdemo.service.retrofit;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

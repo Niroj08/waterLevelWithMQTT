@@ -1,7 +1,8 @@
-package com.technotroop.mqttdemo;
+package com.technotroop.mqttdemo.service.api;
 
-import com.technotroop.mqttdemo.service.PostService;
-import com.technotroop.mqttdemo.service.RetrofitConfig;
+import com.technotroop.mqttdemo.service.model.User;
+import com.technotroop.mqttdemo.service.retrofit.PostService;
+import com.technotroop.mqttdemo.service.retrofit.RetrofitConfig;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

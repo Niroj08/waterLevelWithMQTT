@@ -1,10 +1,10 @@
-package com.technotroop.mqttdemo.service;
+package com.technotroop.mqttdemo.service.retrofit;
 
 /**
  * Created by technotroop on 10/18/16.
  */
 
-import com.technotroop.mqttdemo.Constants;
+import com.technotroop.mqttdemo.utils.Constants;
 
 import java.util.concurrent.TimeUnit;
 

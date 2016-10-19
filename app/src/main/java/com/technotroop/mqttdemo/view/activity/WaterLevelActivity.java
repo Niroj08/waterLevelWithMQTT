@@ -1,8 +1,11 @@
-package com.technotroop.mqttdemo;
+package com.technotroop.mqttdemo.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.SeekBar;
+
+import com.technotroop.mqttdemo.R;
+import com.technotroop.mqttdemo.utils.VerticalProgressBar;
 
 public class WaterLevelActivity extends AppCompatActivity {
 

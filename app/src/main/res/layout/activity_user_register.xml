@@ -6,7 +6,7 @@
     android:animateLayoutChanges="true"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.technotroop.mqttdemo.UserRegisterActivity">
+    tools:context="com.technotroop.mqttdemo.view.activity.UserRegisterActivity">
 
     <RelativeLayout
         android:id="@+id/containerViewPager"
@@ -54,7 +54,7 @@
             android:visibility="gone" />
 
 
-        <com.technotroop.mqttdemo.VerticalProgressBar
+        <com.technotroop.mqttdemo.utils.VerticalProgressBar
             android:id="@+id/progressWater"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="166dp"

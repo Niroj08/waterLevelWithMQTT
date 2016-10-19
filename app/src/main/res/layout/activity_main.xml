@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.technotroop.mqttdemo.MainActivity">
+    tools:context="com.technotroop.mqttdemo.view.activity.MainActivity">
 
     <TextView
         android:id="@+id/labelConnection"

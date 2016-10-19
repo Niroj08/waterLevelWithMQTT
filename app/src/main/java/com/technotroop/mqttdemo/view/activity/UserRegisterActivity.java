@@ -1,4 +1,4 @@
-package com.technotroop.mqttdemo;
+package com.technotroop.mqttdemo.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,12 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.nineoldandroids.animation.Animator;
+import com.technotroop.mqttdemo.R;
+import com.technotroop.mqttdemo.utils.UserValidation;
+import com.technotroop.mqttdemo.utils.VerticalProgressBar;
+import com.technotroop.mqttdemo.controller.UserRegisterController;
+import com.technotroop.mqttdemo.service.retrofit.UserRegisterInterface;
+import com.technotroop.mqttdemo.service.model.User;
 
 public class UserRegisterActivity extends AppCompatActivity implements UserRegisterInterface {
 

@@ -1,4 +1,4 @@
-package com.technotroop.mqttdemo;
+package com.technotroop.mqttdemo.utils;
 
 /**
  * Created by technotroop on 10/17/16.
