@@ -15,10 +15,12 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.UnsupportedEncodingException;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements MqttCallback {
 
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
     private String TAG = "CONNECTION STATUS";
 
     private TextView textConnectionStatus, textMessage;
-    private Button btnPublish, btnSubscribe, btnConnect;
+    private Button btnPublish, btnSubscribe, btnConnect, btnDisconnect;
     private EditText editHost, editPort, editTopic, editMessage;
 
     @Override
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
         btnPublish = (Button) findViewById(R.id.btnPublish);
         btnSubscribe = (Button) findViewById(R.id.btnSubscribe);
         btnConnect = (Button) findViewById(R.id.btnConnect);
+        btnDisconnect = (Button) findViewById(R.id.btnDisconnect);
 
         editHost = (EditText) findViewById(R.id.editHost);
         editPort = (EditText) findViewById(R.id.editPort);
@@ -84,6 +87,34 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
                 subscribeMessage(topic);
             }
         });
+
+        btnDisconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disconnectMQTTConnection();
+            }
+        });
+    }
+
+    private void disconnectMQTTConnection() {
+        try {
+            IMqttToken disconToken = client.disconnect();
+            disconToken.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    textConnectionStatus.setText("Successfully disconnected");
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken,
+                                      Throwable exception) {
+                    exception.printStackTrace();
+                    textConnectionStatus.setText("Something went wrong during disconnect.");
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     private void subscribeMessage(String topic) {
@@ -152,15 +183,20 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
             editPort.setError("Required");
             return;
         } else {
-            clientId = MqttClient.generateClientId();
+            clientId = String.valueOf(UUID.randomUUID());
 
             String hostAndPort = "tcp://" + host + ":" + port;
             client = new MqttAndroidClient(this.getApplicationContext(),
                     hostAndPort,
                     clientId);
 
+            MqttConnectOptions options = new MqttConnectOptions();
+            //options.setCleanSession(true);
+            options.setUserName("aj_mjn");
+            options.setPassword("8abfc8bfc06d469f8f391ff15bd0ff79".toCharArray());
+
             try {
-                token = client.connect();
+                token = client.connect(options);
                 client.setCallback(this);
                 token.setActionCallback(new IMqttActionListener() {
                     @Override

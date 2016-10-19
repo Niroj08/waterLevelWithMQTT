@@ -97,4 +97,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:text="Go to Water Level" />
+
+    <Button
+        android:id="@+id/btnDisconnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/btnWaterLevel"
+        android:text="Disconnect" />
+
 </RelativeLayout>
