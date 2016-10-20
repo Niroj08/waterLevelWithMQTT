@@ -27,15 +27,31 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.activity.UserRegisterActivity"
+        <activity
+            android:name=".view.activity.UserRegisterActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
 
-        <service android:name="org.eclipse.paho.android.service.MqttService" >
+        <service android:name="org.eclipse.paho.android.service.MqttService"></service>
+
+        <service
+            android:name=".utils.mqttService.MQTTBaseService"
+            android:label="MQTT Service">
+            <intent-filter>
+                <action android:name="utils.mqttService.MQTTBaseService" />
+            </intent-filter>
         </service>
+
+        <receiver
+            android:name=".utils.mqttService.MQTTServiceStarterAtBootReceiver"
+            android:label="StartMQTTServiceAtBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
 
         <meta-data

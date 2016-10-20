@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.technotroop.mqttdemo.R;
+import com.technotroop.mqttdemo.utils.mqttService.MQTTBaseService;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -38,10 +39,14 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
     private Button btnPublish, btnSubscribe, btnConnect, btnDisconnect;
     private EditText editHost, editPort, editTopic, editMessage;
 
+    private MQTTBaseService mqttBaseService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mqttBaseService = new MQTTBaseService();
 
         textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
         textMessage = (TextView) findViewById(R.id.textMessage);
@@ -63,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
                 String host = editHost.getText().toString();
                 String port = editPort.getText().toString();
 
-                mqttConnection(host, port);
+                mqttBaseService.mqttConnection(host, port);
             }
         });
 
@@ -75,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
                 String topic = editTopic.getText().toString();
                 String message = editMessage.getText().toString();
 
-                publishMessage(topic, message);
+                mqttBaseService.publishMessage(topic, message);
             }
         });
 
@@ -86,137 +91,16 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
                 editTopic.setHint("Enter Topic to Subscribe");
                 String topic = editTopic.getText().toString();
 
-                subscribeMessage(topic);
+                mqttBaseService.subscribeMessage(topic);
             }
         });
 
         btnDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                disconnectMQTTConnection();
+                mqttBaseService.disconnectMQTTConnection();
             }
         });
-    }
-
-    private void disconnectMQTTConnection() {
-        try {
-            IMqttToken disconToken = client.disconnect();
-            disconToken.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    textConnectionStatus.setText("Successfully disconnected");
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken,
-                                      Throwable exception) {
-                    exception.printStackTrace();
-                    textConnectionStatus.setText("Something went wrong during disconnect.");
-                }
-            });
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void subscribeMessage(String topic) {
-        if (TextUtils.isEmpty(topic)) {
-
-            editTopic.setError("Topic Required");
-            return;
-        } else {
-            int qos = 1;
-            try {
-                subToken = client.subscribe(topic, qos);
-                subToken.setActionCallback(new IMqttActionListener() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        Toast.makeText(getApplicationContext(), "Topic was subscribed successfully!", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken,
-                                          Throwable exception) {
-                        Toast.makeText(getApplicationContext(), "Topic Subscription failed", Toast.LENGTH_SHORT)
-                                .show();
-
-                    }
-                });
-            } catch (MqttException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void publishMessage(String topic, String payload) {
-        if (TextUtils.isEmpty(topic)) {
-
-            editTopic.setError("Topic Required");
-            return;
-        } else if (TextUtils.isEmpty(payload)) {
-
-            editMessage.setError("Message Required");
-            return;
-        } else {
-            byte[] encodedPayload = new byte[0];
-            if (client.isConnected()) {
-                try {
-                    encodedPayload = payload.getBytes("UTF-8");
-                    MqttMessage message = new MqttMessage(encodedPayload);
-                    client.publish(topic, message);
-                } catch (UnsupportedEncodingException | MqttException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(getApplicationContext(), "No Mqtt Connection", Toast.LENGTH_SHORT)
-                        .show();
-            }
-        }
-    }
-
-    private void mqttConnection(String host, String port) {
-        if (TextUtils.isEmpty(host)) {
-
-            editHost.setError("Required");
-            return;
-        } else if (TextUtils.isEmpty(port)) {
-
-            editPort.setError("Required");
-            return;
-        } else {
-            clientId = String.valueOf(UUID.randomUUID());
-
-            String hostAndPort = "tcp://" + host + ":" + port;
-            client = new MqttAndroidClient(this.getApplicationContext(),
-                    hostAndPort,
-                    clientId);
-
-            MqttConnectOptions options = new MqttConnectOptions();
-            //options.setCleanSession(true);
-            options.setUserName("aj_mjn");
-            options.setPassword("8abfc8bfc06d469f8f391ff15bd0ff79".toCharArray());
-
-            try {
-                token = client.connect(options);
-                client.setCallback(this);
-                token.setActionCallback(new IMqttActionListener() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        textConnectionStatus.setText("CONNECTION SUCCESS");
-                    }
-
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                        exception.printStackTrace();
-                        textConnectionStatus.setText("CONNECTION FAILED");
-
-                    }
-                });
-            } catch (MqttException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override

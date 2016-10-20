@@ -27,33 +27,16 @@ import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.util.Log;
 
-import com.ibm.mqtt.IMqttClient;
-import com.ibm.mqtt.MqttClient;
-import com.ibm.mqtt.MqttException;
-import com.ibm.mqtt.MqttNotConnectedException;
-import com.ibm.mqtt.MqttPersistence;
-import com.ibm.mqtt.MqttPersistenceException;
-import com.ibm.mqtt.MqttSimpleCallback;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 
-*/
-/*
- * An example of how to implement an MQTT client in Android, able to receive
- *  push notifications from an MQTT message broker server.
- *
- *  Dale Lane (dale.lane@gmail.com)
- *    28 Jan 2011
- *//*
 
-public class MQTTService extends Service implements MqttSimpleCallback
+public class MQTTService extends Service implements MqttCallback
 {
-    */
-/************************************************************************//*
+**********************************************************************
 
-    */
-/*    CONSTANTS                                                         *//*
+    CONSTANTS
 
-    */
-/************************************************************************//*
+**********************************************************************
 
 
     // something unique to identify your app - used for stuff like accessing
@@ -94,28 +77,22 @@ public class MQTTService extends Service implements MqttSimpleCallback
     // MQTT constants
     public static final int MAX_MQTT_CLIENTID_LENGTH = 22;
 
-    */
-/************************************************************************//*
+**********************************************************************
 
-    */
-/*    VARIABLES used to maintain state                                  *//*
+    VARIABLES used to maintain state
 
-    */
-/************************************************************************//*
+**********************************************************************
 
 
     // status of MQTT client connection
     private MQTTConnectionStatus connectionStatus = MQTTConnectionStatus.INITIAL;
 
 
-    */
-/************************************************************************//*
+**********************************************************************
 
-    */
-/*    VARIABLES used to configure MQTT connection                       *//*
+    VARIABLES used to configure MQTT connection
 
-    */
-/************************************************************************//*
+**********************************************************************
 
 
     // taken from preferences
@@ -158,14 +135,11 @@ public class MQTTService extends Service implements MqttSimpleCallback
 
 
 
-    */
-/************************************************************************//*
+**********************************************************************
 
-    */
-/*    VARIABLES  - other local variables                                *//*
+    VARIABLES  - other local variables
 
-    */
-/************************************************************************//*
+**********************************************************************
 
     // connection to the message broker
     private IMqttClient mqttClient = null;
@@ -179,14 +153,11 @@ public class MQTTService extends Service implements MqttSimpleCallback
     // receiver that wakes the Service up when it's time to ping the server
     private PingSender pingSender;
 
-    */
-/************************************************************************//*
+**********************************************************************
 
-    */
-/*    METHODS - core Service lifecycle methods                          *//*
+    METHODS - core Service lifecycle methods
 
-    */
-/************************************************************************//*
+**********************************************************************
 
 
     // see http://developer.android.com/guide/topics/fundamentals.html#lcycles
@@ -391,14 +362,11 @@ public class MQTTService extends Service implements MqttSimpleCallback
     }
 
 
-    */
-/************************************************************************//*
+**********************************************************************
 
-    */
-/*    METHODS - broadcasts and notifications                            *//*
+    METHODS - broadcasts and notifications
 
-    */
-/************************************************************************//*
+**********************************************************************
 
 
     // methods used to notify the Activity UI of something that has happened
@@ -450,14 +418,11 @@ public class MQTTService extends Service implements MqttSimpleCallback
     }
 
 
-    */
-/************************************************************************//*
+**********************************************************************
 
-    */
-/*    METHODS - binding that allows access from the Actitivy            *//*
+    METHODS - binding that allows access from the Actitivy
 
-    */
-/************************************************************************//*
+**********************************************************************
 
 
     // trying to do local binding while minimizing leaks - code thanks to
@@ -544,21 +509,16 @@ public class MQTTService extends Service implements MqttSimpleCallback
     }
 
 
-    */
-/************************************************************************//*
+**********************************************************************
 
-    */
-/*    METHODS - MQTT methods inherited from MQTT classes                *//*
+    METHODS - MQTT methods inherited from MQTT classes
 
-    */
-/************************************************************************//*
+**********************************************************************
 
 
-    */
-/*
      * callback - method called when we no longer have a connection to the
      *  message broker server
-     *//*
+
 
     public void connectionLost() throws Exception
     {
@@ -619,10 +579,8 @@ public class MQTTService extends Service implements MqttSimpleCallback
     }
 
 
-    */
-/*
      *   callback - called when we receive a message from the server
-     *//*
+
 
     public void publishArrived(String topic, byte[] payloadbytes, int qos, boolean retained)
     {
@@ -668,21 +626,16 @@ public class MQTTService extends Service implements MqttSimpleCallback
     }
 
 
-    */
-/************************************************************************//*
+**********************************************************************
 
-    */
-/*    METHODS - wrappers for some of the MQTT methods that we use       *//*
+    METHODS - wrappers for some of the MQTT methods that we use
 
-    */
-/************************************************************************//*
+**********************************************************************
 
 
-    */
-/*
      * Create a client connection object that defines our connection to a
      *   message broker server
-     *//*
+
 
     private void defineConnectionToBroker(String brokerHostName)
     {
@@ -714,10 +667,8 @@ public class MQTTService extends Service implements MqttSimpleCallback
         }
     }
 
-    */
-/*
      * (Re-)connect to the message broker
-     *//*
+
 
     private boolean connectToBroker()
     {
@@ -770,11 +721,9 @@ public class MQTTService extends Service implements MqttSimpleCallback
         }
     }
 
-    */
-/*
      * Send a request to the message broker to be sent messages published with
      *  the specified topic name. Wildcards are allowed.
-     *//*
+
 
     private void subscribeToTopic(String topicName)
     {
@@ -823,10 +772,8 @@ public class MQTTService extends Service implements MqttSimpleCallback
         }
     }
 
-    */
-/*
      * Terminates a connection to the message broker.
-     *//*
+
 
     private void disconnectFromBroker()
     {
@@ -874,10 +821,8 @@ public class MQTTService extends Service implements MqttSimpleCallback
         nm.cancelAll();
     }
 
-    */
-/*
      * Checks if the MQTT client thinks it has an active connection
-     *//*
+
 
     private boolean isAlreadyConnected()
     {
@@ -923,12 +868,10 @@ public class MQTTService extends Service implements MqttSimpleCallback
     }
 
 
-    */
-/*
      * Called in response to a change in network connection - after losing a
      *  connection to the server, this allows us to wait until we have a usable
      *  data connection again
-     *//*
+
 
     private class NetworkConnectionIntentReceiver extends BroadcastReceiver
     {
@@ -960,11 +903,9 @@ public class MQTTService extends Service implements MqttSimpleCallback
     }
 
 
-    */
-/*
      * Schedule the next time that you want the phone to wake up and ping the
      *  message broker server
-     *//*
+
 
     private void scheduleNextPing()
     {
@@ -1003,12 +944,10 @@ public class MQTTService extends Service implements MqttSimpleCallback
     }
 
 
-    */
-/*
      * Used to implement a keep-alive protocol at this Service level - it sends
      *  a PING message to the server, then schedules another ping after an
      *  interval defined by keepAliveSeconds
-     *//*
+
 
     public class PingSender extends BroadcastReceiver
     {
@@ -1055,14 +994,11 @@ public class MQTTService extends Service implements MqttSimpleCallback
 
 
 
-    */
-/************************************************************************//*
+**********************************************************************
 
-    */
-/*   APP SPECIFIC - stuff that would vary for different uses of MQTT    *//*
+   APP SPECIFIC - stuff that would vary for different uses of MQTT
 
-    */
-/************************************************************************//*
+**********************************************************************
 
 
     //  apps that handle very small amounts of data - e.g. updates and
@@ -1115,14 +1051,11 @@ public class MQTTService extends Service implements MqttSimpleCallback
     }
 
 
-    */
-/************************************************************************//*
+**********************************************************************
 
-    */
-/*    METHODS - internal utility methods                                *//*
+    METHODS - internal utility methods
 
-    */
-/************************************************************************//*
+**********************************************************************
 
 
     private String generateClientId()
@@ -1160,4 +1093,5 @@ public class MQTTService extends Service implements MqttSimpleCallback
 
         return false;
     }
-}*/
+}
+*/

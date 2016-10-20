@@ -12,4 +12,15 @@
     <string name="required">Required!</string>
     <string name="invalidEmail">Invalid email id!</string>
     <string name="invalidePhone">Invalid phone number!</string>
+    <string name="invalidHostPort">Invalid host or port.</string>
+    <string name="connectionSuccessful">Connection to MQTT broker successful.</string>
+    <string name="connectionFailed">Connection to MQTT broker failed.</string>
+    <string name="connectionLost">Connection to MQTT broker lost.</string>
+    <string name="emptyTopic">Topic cannot be empty.</string>
+    <string name="emptyMessage">Cannot publish empty message.</string>
+    <string name="somethingWentWrongDuringPublish">Something went wrong during publishing the message to broker.</string>
+    <string name="subscribeSuccess">Successfully subscribed to topic:</string>
+    <string name="subscribeFailed">Failed subscribing topic:</string>
+    <string name="connectionDisconnected">MQTT connection successfully disconnected.</string>
+    <string name="connectionDisconnectError">MQTT broker disconnect error.</string>
 </resources>
