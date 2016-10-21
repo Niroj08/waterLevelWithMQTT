@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.technotroop.mqttdemo.MQTTApplicaiton;
 import com.technotroop.mqttdemo.R;
@@ -47,6 +48,7 @@ public class MQTTBaseService extends Service implements MqttCallback {
         String port = Constants.MQTT_PORT;
 
         mqttConnection(host, port);
+
         return Service.START_NOT_STICKY;
     }
 
@@ -63,11 +65,11 @@ public class MQTTBaseService extends Service implements MqttCallback {
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         Log.v(Constants.MQTT_CONNECTION, topic + message);
 
-        if (topic.equalsIgnoreCase("aj_mjn/feeds/color")) {
-            int waterLevel = Integer.parseInt(String.valueOf(message).substring(1, 3));
-            
+        if (topic.equalsIgnoreCase("aj_mjn/feeds/seek")) {
+            int waterLevel = Integer.parseInt(String.valueOf(message));
+
             MQTTUtils.storeRetainedWaterLevel(waterLevel);
-            
+
             WaterLevelActivity.progressWaterLevel.setProgress(waterLevel);
         }
         //TODO: message arrived from the subscribed topic
@@ -79,45 +81,56 @@ public class MQTTBaseService extends Service implements MqttCallback {
     }
 
     public void mqttConnection(String host, String port) {
-        if (TextUtils.isEmpty(host) || TextUtils.isEmpty(port)) {
+        if (MQTTUtils.isInternetConnected()) {
+            if (TextUtils.isEmpty(host) || TextUtils.isEmpty(port)) {
 
-            Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.invalidHostPort));
-            return;
-        } else {
-            clientId = MqttClient.generateClientId();
+                Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.invalidHostPort));
+                return;
+            } else {
+                clientId = MqttClient.generateClientId();
 
-            String hostAndPort = "tcp://" + host + ":" + port;
-            client = new MqttAndroidClient(this.getApplicationContext(),
-                    hostAndPort,
-                    clientId);
+                String hostAndPort = "tcp://" + host + ":" + port;
+                client = new MqttAndroidClient(MQTTUtils.getContext(),
+                        hostAndPort,
+                        clientId);
 
-            MqttConnectOptions options = new MqttConnectOptions();
-            //options.setCleanSession(true);
-            options.setUserName("aj_mjn");
-            options.setPassword("8abfc8bfc06d469f8f391ff15bd0ff79".toCharArray());
+                MqttConnectOptions options = new MqttConnectOptions();
+                //options.setCleanSession(true);
+                options.setUserName("aj_mjn");
+                options.setPassword("8abfc8bfc06d469f8f391ff15bd0ff79".toCharArray());
 
-            try {
-                token = client.connect(options);
-                client.setCallback(this);
-                token.setActionCallback(new IMqttActionListener() {
-                    @Override
-                    public void onSuccess(IMqttToken asyncActionToken) {
-                        Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.connectionSuccessful));
-                        subscribeMessage("aj_mjn/feeds/color");
-                        //TODO: Subscribe to all topics after the connection is established
+                try {
+                    token = client.connect(options);
+                    client.setCallback(this);
+                    token.setActionCallback(new IMqttActionListener() {
+                        @Override
+                        public void onSuccess(IMqttToken asyncActionToken) {
+                            Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.connectionSuccessful));
+                            //subscribe test topic color
+                            subscribeMessage("aj_mjn/feeds/color");
+                            //subscribe test topic seek
+                            subscribeMessage("aj_mjn/feeds/seek");
+                            //subscribe to test topic onoff
+                            subscribeMessage("aj_mjn/feeds/onoff");
+                            //subscribe to test topic water level
+                            subscribeMessage("aj_mjn/feeds/water_level");
+                            //TODO: Subscribe to all topics after the connection is established
+                        }
 
-                    }
+                        @Override
+                        public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                            exception.printStackTrace();
+                            Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.connectionFailed));
 
-                    @Override
-                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                        exception.printStackTrace();
-                        Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.connectionFailed));
-
-                    }
-                });
-            } catch (MqttException e) {
-                e.printStackTrace();
+                        }
+                    });
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            Log.v(Constants.MQTT, MQTTUtils.getContext().getString(R.string.noInternet));
+            //TODO: info user for no internet connectivity
         }
     }
 

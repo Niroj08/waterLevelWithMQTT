@@ -2,6 +2,7 @@ package com.technotroop.mqttdemo.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 
 import com.technotroop.mqttdemo.MQTTApplicaiton;
 
@@ -24,5 +25,10 @@ public class MQTTUtils {
     public static int getRetainedWaterLevel() {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.MQTT_RETAINED_WATERLEVEL, Context.MODE_PRIVATE);
         return sharedPreferences.getInt("waterLevel", 0);
+    }
+
+    public static boolean isInternetConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(getContext().CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 }

@@ -10,6 +10,7 @@ public class Constants {
 
     public static final String MQTT_CONNECTION = "MQTT_CONNECTION";
     public static final String MQTT_RETAINED_WATERLEVEL = "MQTT_WATERLEVEL";
+    public static final String MQTT = "MQTT";
 
     public static String serverBaseURL = "http://www.google.com/";
 }
