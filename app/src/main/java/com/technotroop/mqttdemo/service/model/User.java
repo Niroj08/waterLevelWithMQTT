@@ -1,15 +1,32 @@
 package com.technotroop.mqttdemo.service.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by technotroop on 10/18/16.
  */
-public class User {
+public class User extends RealmObject implements Serializable{
 
+    @PrimaryKey
     private String id;
+
     private String email;
+    @SerializedName("firstname")
     private String firstName;
+    @SerializedName("lastname")
     private String lastName;
+    @SerializedName("phone_number")
     private String phoneNumber;
+    //1 means active, 0 means has not been inactive
+    @SerializedName("is_active")
+    private int isActive;
+    @SerializedName("water_pump_controller_id")
+    private String waterPumpControllerId;
 
     public String getFirstName() {
         return firstName;
@@ -49,5 +66,21 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
+    }
+
+    public String getWaterPumpControllerId() {
+        return waterPumpControllerId;
+    }
+
+    public void setWaterPumpControllerId(String waterPumpControllerId) {
+        this.waterPumpControllerId = waterPumpControllerId;
     }
 }
