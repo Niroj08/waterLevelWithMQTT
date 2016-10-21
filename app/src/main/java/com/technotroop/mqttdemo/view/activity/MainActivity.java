@@ -1,31 +1,20 @@
 package com.technotroop.mqttdemo.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.technotroop.mqttdemo.R;
 import com.technotroop.mqttdemo.utils.mqttService.MQTTBaseService;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.io.UnsupportedEncodingException;
-import java.util.UUID;
-
-public class MainActivity extends AppCompatActivity implements MqttCallback {
+public class MainActivity extends AppCompatActivity {
 
 
     //variables fo mqtt client
@@ -36,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
     private String TAG = "CONNECTION STATUS";
 
     private TextView textConnectionStatus, textMessage;
-    private Button btnPublish, btnSubscribe, btnConnect, btnDisconnect;
+    private Button btnPublish, btnSubscribe, btnConnect, btnDisconnect, btnWaterLevel;
     private EditText editHost, editPort, editTopic, editMessage;
 
     private MQTTBaseService mqttBaseService;
@@ -55,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
         btnSubscribe = (Button) findViewById(R.id.btnSubscribe);
         btnConnect = (Button) findViewById(R.id.btnConnect);
         btnDisconnect = (Button) findViewById(R.id.btnDisconnect);
+        btnWaterLevel = (Button) findViewById(R.id.btnWaterLevel);
 
         editHost = (EditText) findViewById(R.id.editHost);
         editPort = (EditText) findViewById(R.id.editPort);
@@ -101,21 +91,14 @@ public class MainActivity extends AppCompatActivity implements MqttCallback {
                 mqttBaseService.disconnectMQTTConnection();
             }
         });
+
+        btnWaterLevel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), WaterLevelActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    @Override
-    public void connectionLost(Throwable cause) {
-
-    }
-
-    @Override
-    public void messageArrived(String topic, MqttMessage message) throws Exception {
-        System.out.println(message);
-        textMessage.setText(topic + " = " + message);
-    }
-
-    @Override
-    public void deliveryComplete(IMqttDeliveryToken token) {
-
-    }
 }
