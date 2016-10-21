@@ -19,6 +19,8 @@ public interface PostService {
             @Field("userFirstName") String userFirstName,
             @Field("userLastName") String userLastName,
             @Field("userPhoneNo") String userPhoneNo,
+            @Field("address") String address,
+            @Field("city") String city,
             @Field("userMobileDeviceId") String userMobileDeviceId,
             @Field("userIOTDeviceId") String userIOTDeviceId);
 }

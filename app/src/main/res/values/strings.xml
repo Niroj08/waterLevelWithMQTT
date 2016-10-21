@@ -23,4 +23,8 @@
     <string name="subscribeFailed">Failed subscribing topic:</string>
     <string name="connectionDisconnected">MQTT connection successfully disconnected.</string>
     <string name="connectionDisconnectError">MQTT broker disconnect error.</string>
+    <string name="address">Address</string>
+    <string name="city">City</string>
+    <string name="previous"><![CDATA[<< Previous]]></string>
+    <string name="addLocation"><![CDATA[Add Location >>]]></string>
 </resources>

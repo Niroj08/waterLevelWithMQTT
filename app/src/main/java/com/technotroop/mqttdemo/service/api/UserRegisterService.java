@@ -14,7 +14,7 @@ import retrofit2.Response;
  */
 public class UserRegisterService {
 
-    public void userRegister(final Callback<ResponseBody> responseBodyCallback, User user) {
+    public void userRegister(final Callback<ResponseBody> responseBodyCallback, User user, String city) {
         // create upload service client
         PostService userRegisterService =
                 RetrofitConfig.createService(PostService.class);
@@ -23,7 +23,7 @@ public class UserRegisterService {
         Call<ResponseBody> call = userRegisterService.registerUser(user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getPhoneNumber(), "deviceID", "iotDeviceId");
+                user.getPhoneNumber(),user.getAddress(), city, "deviceID", "iotDeviceId");
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

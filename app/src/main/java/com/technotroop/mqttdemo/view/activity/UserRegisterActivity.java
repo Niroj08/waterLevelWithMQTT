@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -26,12 +27,13 @@ import com.technotroop.mqttdemo.service.model.User;
 
 public class UserRegisterActivity extends AppCompatActivity implements UserRegisterInterface {
 
-    private RelativeLayout buttonEffect;
+    private RelativeLayout buttonEffect, containerUserDetails, containerUserAddress;
 
-    private TextView tourTitle, tourMessage, btnMore, btnRegister;
-    private EditText emailId, firstName, lastName, phoneNo;
+    private TextView tourTitle, tourMessage, btnMore, btnRegister, btnAddLocation, btnPrevious;
+    private EditText emailId, firstName, lastName, phoneNo, address;
     private ImageView imgWaterTank, imgRouter, imgIOS, imgAndroid, imgNotificationIOS, imgNotificationAndroid;
     private View linetitle;
+    private Spinner city;
 
     private Button btnBeginTour;
 
@@ -48,11 +50,16 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         tourMessage = (TextView) findViewById(R.id.textTourMessage);
         btnMore = (TextView) findViewById(R.id.btnMore);
         btnRegister = (TextView) findViewById(R.id.btnRegister);
+        btnAddLocation = (TextView) findViewById(R.id.btnAddLocation);
+        btnPrevious = (TextView) findViewById(R.id.btnPrevious);
 
         emailId = (EditText) findViewById(R.id.editTextEmail);
         firstName = (EditText) findViewById(R.id.editTextFirstName);
         lastName = (EditText) findViewById(R.id.editTextLastName);
         phoneNo = (EditText) findViewById(R.id.editTextPhone);
+        address = (EditText) findViewById(R.id.editTextAddress);
+
+        city = (Spinner) findViewById(R.id.spinnerCity);
 
         imgWaterTank = (ImageView) findViewById(R.id.imgWaterTank);
         imgRouter = (ImageView) findViewById(R.id.imgRouter);
@@ -64,7 +71,10 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         linetitle = findViewById(R.id.lineTitle);
 
         btnBeginTour = (Button) findViewById(R.id.btnBeginTour);
+
         buttonEffect = (RelativeLayout) findViewById(R.id.viewEffect);
+        containerUserDetails = (RelativeLayout) findViewById(R.id.containerUserDetail);
+        containerUserAddress = (RelativeLayout) findViewById(R.id.containerUserAddress);
 
         progressBarWater = (VerticalProgressBar) findViewById(R.id.progressWater);
 
@@ -353,6 +363,22 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
             }
         });
 
+        btnAddLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                containerUserDetails.setVisibility(View.GONE);
+                containerUserAddress.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                containerUserAddress.setVisibility(View.GONE);
+                containerUserDetails.setVisibility(View.VISIBLE);
+            }
+        });
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -360,10 +386,13 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                 user.setFirstName(firstName.getText().toString());
                 user.setLastName(lastName.getText().toString());
                 user.setPhoneNumber(phoneNo.getText().toString());
+                user.setAddress(address.getText().toString());
+
+                String selectedCity = String.valueOf(city.getSelectedItem());
 
                 if (userRegisterController.isDataValidate(user) == UserValidation.TRUE) {
                     //TODO:proceed to service
-                    userRegisterController.registerUser(user);
+                    userRegisterController.registerUser(user, selectedCity);
 
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_EMAIL) {
                     emailId.setError(getString(R.string.required));
@@ -376,6 +405,9 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_PHONE) {
                     phoneNo.setError(getString(R.string.required));
+                    return;
+                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_ADDRESS) {
+                    address.setError(getString(R.string.required));
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.INVALID_EMAIL) {
                     emailId.setError(getString(R.string.invalidEmail));

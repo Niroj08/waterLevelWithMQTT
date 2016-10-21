@@ -10,7 +10,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by technotroop on 10/18/16.
  */
-public class User extends RealmObject implements Serializable{
+public class User extends RealmObject implements Serializable {
 
     @PrimaryKey
     private String id;
@@ -22,6 +22,8 @@ public class User extends RealmObject implements Serializable{
     private String lastName;
     @SerializedName("phone_number")
     private String phoneNumber;
+    private String address;
+
     //1 means active, 0 means has not been inactive
     @SerializedName("is_active")
     private int isActive;
@@ -82,5 +84,13 @@ public class User extends RealmObject implements Serializable{
 
     public void setWaterPumpControllerId(String waterPumpControllerId) {
         this.waterPumpControllerId = waterPumpControllerId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

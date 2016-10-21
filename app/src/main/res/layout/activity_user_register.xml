@@ -162,67 +162,36 @@
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="10dp"
+        android:layout_weight="0.35"
         android:scrollbars="none">
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.35"
+            android:layout_height="match_parent"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/inputEmail"
+            <RelativeLayout
+                android:id="@+id/containerUserDetail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_height="match_parent">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/editTextEmail"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/inputEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:maxLength="30"
-                    android:paddingTop="5dp"
-                    android:singleLine="true"
-                    android:textColor="@color/textColor"
-                    android:textColorHint="@color/hintColor" />
-            </android.support.design.widget.TextInputLayout>
-
-            <View
-                android:id="@+id/line1"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/inputEmail"
-                android:background="@color/colorAccent" />
-
-
-            <LinearLayout
-                android:id="@+id/containerName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/line1"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/inputFullName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
                     android:layout_weight="1">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/editTextFirstName"
+                        android:id="@+id/editTextEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="@string/firstName"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
                         android:maxLength="30"
                         android:paddingTop="5dp"
                         android:singleLine="true"
@@ -230,76 +199,35 @@
                         android:textColorHint="@color/hintColor" />
                 </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/inputLastName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/editTextLastName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="@string/lastName"
-                        android:maxLength="30"
-                        android:paddingTop="5dp"
-                        android:singleLine="true"
-                        android:textColor="@color/textColor"
-                        android:textColorHint="@color/hintColor" />
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/containerLine1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/containerName"
-                android:orientation="horizontal">
-
                 <View
-                    android:layout_width="0dp"
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
+                    android:layout_below="@+id/inputEmail"
                     android:background="@color/colorAccent" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorAccent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/containerLine1"
-                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/containerName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:orientation="vertical">
+                    android:layout_below="@+id/line1"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
 
                     <android.support.design.widget.TextInputLayout
-                        android:id="@+id/inputPhone"
-                        android:layout_width="match_parent"
+                        android:id="@+id/inputFullName"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="5dp"
                         android:layout_weight="1">
 
                         <android.support.design.widget.TextInputEditText
-                            android:id="@+id/editTextPhone"
+                            android:id="@+id/editTextFirstName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@null"
-                            android:hint="@string/phone"
-                            android:imeOptions="actionDone"
-                            android:inputType="number"
+                            android:hint="@string/firstName"
                             android:maxLength="30"
                             android:paddingTop="5dp"
                             android:singleLine="true"
@@ -307,27 +235,189 @@
                             android:textColorHint="@color/hintColor" />
                     </android.support.design.widget.TextInputLayout>
 
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/inputLastName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/editTextLastName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="@string/lastName"
+                            android:maxLength="30"
+                            android:paddingTop="5dp"
+                            android:singleLine="true"
+                            android:textColor="@color/textColor"
+                            android:textColorHint="@color/hintColor" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/containerLine1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/containerName"
+                    android:orientation="horizontal">
+
                     <View
-                        android:id="@+id/line2"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:layout_below="@+id/inputPhone"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorAccent" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
                         android:background="@color/colorAccent" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/containerLine1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:orientation="vertical">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/inputPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/editTextPhone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:hint="@string/phone"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:maxLength="30"
+                                android:paddingTop="5dp"
+                                android:singleLine="true"
+                                android:textColor="@color/textColor"
+                                android:textColorHint="@color/hintColor" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <View
+                            android:id="@+id/line2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/inputPhone"
+                            android:background="@color/colorAccent" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/btnAddLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/background_button_blue"
+                        android:padding="10dp"
+                        android:text="@string/addLocation"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/containerUserAddress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/containerUserDetail"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/labelCity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/city"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelCity" />
+
+                <View
+                    android:id="@+id/line3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/spinnerCity"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/colorAccent" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/inputAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/line3"
+                    android:layout_weight="1">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/editTextAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="@string/address"
+                        android:maxLength="30"
+                        android:paddingTop="5dp"
+                        android:singleLine="true"
+                        android:textColor="@color/textColor"
+                        android:textColorHint="@color/hintColor" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:id="@+id/line4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/inputAddress"
+                    android:background="@color/colorAccent" />
+
 
                 <TextView
                     android:id="@+id/btnRegister"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/line4"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/background_button_blue"
                     android:padding="10dp"
                     android:text="@string/register"
                     android:textColor="@color/white" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/btnPrevious"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/line4"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/background_button_blue"
+                    android:padding="10dp"
+                    android:text="@string/previous"
+                    android:textColor="@color/white" />
+
+            </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>

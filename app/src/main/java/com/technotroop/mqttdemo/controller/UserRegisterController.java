@@ -36,6 +36,8 @@ public class UserRegisterController {
             return UserValidation.REQUIRED_LASTNAME;
         } else if (TextUtils.isEmpty(user.getPhoneNumber())) {
             return UserValidation.REQUIRED_PHONE;
+        } else if (TextUtils.isEmpty(user.getAddress())) {
+            return UserValidation.REQUIRED_ADDRESS;
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(user.getEmail()).matches()) {
             return UserValidation.INVALID_EMAIL;
         } else if (user.getPhoneNumber().length() != 10) {
@@ -44,7 +46,7 @@ public class UserRegisterController {
         return UserValidation.TRUE;
     }
 
-    public void registerUser(User user) {
+    public void registerUser(User user, String city) {
         userRegisterService = new UserRegisterService();
         userRegister.onSuccessUserRegister();
 
@@ -72,6 +74,6 @@ public class UserRegisterController {
                 } else {
                 }
             }
-        }, user);
+        }, user, city);
     }
 }
