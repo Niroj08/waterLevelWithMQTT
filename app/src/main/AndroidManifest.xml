@@ -39,7 +39,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name="org.eclipse.paho.android.service.MqttService"/>
+        <activity android:name=".view.activity.WaterTankListActivity" />
+
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
 
         <!--<service
             android:name=".utils.mqttService.MQTTBaseService"

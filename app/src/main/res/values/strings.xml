@@ -32,4 +32,6 @@
     <string name="alreadyRegistered">Already Registered</string>
     <string name="login">Login</string>
     <string name="back">Back</string>
+    <string name="tankList">Registered tanks of</string>
+    <string name="addTank">Add a tank</string>
 </resources>

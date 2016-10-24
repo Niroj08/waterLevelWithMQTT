@@ -29,7 +29,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
     private RelativeLayout buttonEffect, containerUserDetails, containerUserAddress, containerAlreadyRegistered;
 
-    private TextView tourTitle, tourMessage, btnMore, btnRegister, btnAddLocation, btnPrevious,btnBack, textAlreadyRegistered, btnLogin;
+    private TextView tourTitle, tourMessage, btnMore, btnRegister, btnAddLocation, btnPrevious, btnBack, textAlreadyRegistered, btnLogin;
     private EditText emailId, firstName, lastName, phoneNo, address, alreadyRegisteredSN, alreadyRegisteredEmail;
     private ImageView imgWaterTank, imgRouter, imgIOS, imgAndroid, imgNotificationIOS, imgNotificationAndroid;
     private View linetitle;
@@ -458,7 +458,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
     @Override
     public void onSuccessUserRegister() {
-        launchNextActivity(WaterLevelActivity.class);
+        launchNextActivity(WaterTankListActivity.class);
     }
 
     @Override
