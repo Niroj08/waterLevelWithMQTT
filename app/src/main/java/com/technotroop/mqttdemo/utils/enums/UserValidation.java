@@ -1,4 +1,4 @@
-package com.technotroop.mqttdemo.utils;
+package com.technotroop.mqttdemo.utils.enums;
 
 /**
  * Created by technotroop on 10/18/16.

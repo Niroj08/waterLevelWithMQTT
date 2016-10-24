@@ -26,7 +26,7 @@ public class MQTTApplicaiton extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        startMQQTTBaseService();
+       // startMQQTTBaseService();
     }
 
     public static void startMQQTTBaseService() {

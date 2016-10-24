@@ -19,7 +19,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.nineoldandroids.animation.Animator;
 import com.technotroop.mqttdemo.R;
-import com.technotroop.mqttdemo.utils.UserValidation;
+import com.technotroop.mqttdemo.utils.enums.UserValidation;
 import com.technotroop.mqttdemo.utils.VerticalProgressBar;
 import com.technotroop.mqttdemo.controller.UserRegisterController;
 import com.technotroop.mqttdemo.service.retrofit.UserRegisterInterface;

@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.technotroop.mqttdemo.R;
-import com.technotroop.mqttdemo.utils.mqttService.MQTTBaseService;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -28,14 +27,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btnPublish, btnSubscribe, btnConnect, btnDisconnect, btnWaterLevel;
     private EditText editHost, editPort, editTopic, editMessage;
 
-    private MQTTBaseService mqttBaseService;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mqttBaseService = new MQTTBaseService();
 
         textConnectionStatus = (TextView) findViewById(R.id.textConnectionStatus);
         textMessage = (TextView) findViewById(R.id.textMessage);
@@ -58,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 String host = editHost.getText().toString();
                 String port = editPort.getText().toString();
 
-                mqttBaseService.mqttConnection(host, port);
+                //mqttBaseService.mqttConnection(host, port);
             }
         });
 
@@ -70,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 String topic = editTopic.getText().toString();
                 String message = editMessage.getText().toString();
 
-                mqttBaseService.publishMessage(topic, message);
+                //mqttBaseService.publishMessage(topic, message);
             }
         });
 
@@ -81,14 +76,14 @@ public class MainActivity extends AppCompatActivity {
                 editTopic.setHint("Enter Topic to Subscribe");
                 String topic = editTopic.getText().toString();
 
-                mqttBaseService.subscribeMessage(topic);
+                //mqttBaseService.subscribeMessage(topic);
             }
         });
 
         btnDisconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mqttBaseService.disconnectMQTTConnection();
+                //mqttBaseService.disconnectMQTTConnection();
             }
         });
 

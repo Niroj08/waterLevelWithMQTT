@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.technotroop.mqttdemo.utils.Constants;
 import com.technotroop.mqttdemo.service.retrofit.UserRegisterInterface;
 import com.technotroop.mqttdemo.service.api.UserRegisterService;
-import com.technotroop.mqttdemo.utils.UserValidation;
+import com.technotroop.mqttdemo.utils.enums.UserValidation;
 import com.technotroop.mqttdemo.service.model.User;
 
 import java.net.SocketTimeoutException;

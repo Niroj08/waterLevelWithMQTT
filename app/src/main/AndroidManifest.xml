@@ -41,13 +41,13 @@
 
         <service android:name="org.eclipse.paho.android.service.MqttService"/>
 
-        <service
+        <!--<service
             android:name=".utils.mqttService.MQTTBaseService"
             android:label="MQTT Service">
             <intent-filter>
                 <action android:name="utils.mqttService.MQTTBaseService" />
             </intent-filter>
-        </service>
+        </service>-->
 
         <receiver
             android:name=".utils.mqttService.MQTTServiceStarterAtBootReceiver"

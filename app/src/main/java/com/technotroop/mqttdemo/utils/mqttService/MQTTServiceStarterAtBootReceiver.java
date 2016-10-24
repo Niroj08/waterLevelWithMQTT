@@ -14,7 +14,7 @@ public class MQTTServiceStarterAtBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            MQTTApplicaiton.startMQQTTBaseService();
+          //  MQTTApplicaiton.startMQQTTBaseService();
         }
     }
 }

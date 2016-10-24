@@ -12,7 +12,9 @@ import com.technotroop.mqttdemo.MQTTApplicaiton;
 import com.technotroop.mqttdemo.R;
 import com.technotroop.mqttdemo.utils.Constants;
 import com.technotroop.mqttdemo.utils.MQTTUtils;
+import com.technotroop.mqttdemo.utils.enums.WaterLevelTopics;
 import com.technotroop.mqttdemo.view.activity.WaterLevelActivity;
+import com.technotroop.mqttdemo.view.interfaces.MQTTConnectionInterface;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -23,6 +25,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttTopic;
 
 import java.io.UnsupportedEncodingException;
 
@@ -35,6 +38,19 @@ public class MQTTBaseService extends Service implements MqttCallback {
     private static MqttAndroidClient client;
     private IMqttToken token;
     private IMqttToken subToken;
+    private IMqttToken pubToken;
+
+    private MQTTConnectionInterface mqttConnectionInterface;
+
+    public MQTTBaseService(MQTTConnectionInterface connectionInterface) {
+
+        String host = Constants.MQTT_HOST;
+        String port = Constants.MQTT_PORT;
+
+        mqttConnection(host, port);
+
+        mqttConnectionInterface = connectionInterface;
+    }
 
     @Nullable
     @Override
@@ -58,26 +74,31 @@ public class MQTTBaseService extends Service implements MqttCallback {
         Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.connectionLost));
 
         //TODO: ask user to reconnect to the broker
+        if (mqttConnectionInterface != null) {
+            mqttConnectionInterface.onMQTTConnectionError(cause.getMessage());
+        }
 
     }
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         Log.v(Constants.MQTT_CONNECTION, topic + message);
+        String convertedMessage = String.valueOf(message);
 
-        if (topic.equalsIgnoreCase("aj_mjn/feeds/seek")) {
-            int waterLevel = Integer.parseInt(String.valueOf(message));
-
-            MQTTUtils.storeRetainedWaterLevel(waterLevel);
-
-            WaterLevelActivity.progressWaterLevel.setProgress(waterLevel);
+        if (mqttConnectionInterface != null) {
+            mqttConnectionInterface.onMessageReceived(topic, convertedMessage);
         }
+        //WaterLevelActivity.progressWaterLevel.setProgress(waterLevel);
+
         //TODO: message arrived from the subscribed topic
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
 
+        if (token == pubToken) {
+            //TODO: show publish error for respective topics
+        }
     }
 
     public void mqttConnection(String host, String port) {
@@ -106,6 +127,11 @@ public class MQTTBaseService extends Service implements MqttCallback {
                         @Override
                         public void onSuccess(IMqttToken asyncActionToken) {
                             Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.connectionSuccessful));
+
+                            if (mqttConnectionInterface != null) {
+                                mqttConnectionInterface.onMQTTConnectionSuccess();
+                            }
+
                             //subscribe test topic color
                             subscribeMessage("aj_mjn/feeds/color");
                             //subscribe test topic seek
@@ -120,6 +146,11 @@ public class MQTTBaseService extends Service implements MqttCallback {
                         @Override
                         public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                             exception.printStackTrace();
+
+                            if (mqttConnectionInterface != null) {
+                                mqttConnectionInterface.onMQTTConnectionError(exception.getMessage());
+                            }
+
                             Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.connectionFailed));
 
                         }
@@ -131,6 +162,9 @@ public class MQTTBaseService extends Service implements MqttCallback {
         } else {
             Log.v(Constants.MQTT, MQTTUtils.getContext().getString(R.string.noInternet));
             //TODO: info user for no internet connectivity
+            if (mqttConnectionInterface != null) {
+                mqttConnectionInterface.onErrorNoConnection();
+            }
         }
     }
 
@@ -138,27 +172,41 @@ public class MQTTBaseService extends Service implements MqttCallback {
 
         if (TextUtils.isEmpty(topic)) {
 
-            //TODO: could also be required to notify the user
             Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.emptyTopic));
+
+            //TODO: could also be required to notify the user
+            if (mqttConnectionInterface != null) {
+                mqttConnectionInterface.onMQTTPublishNoTopicError();
+            }
             return;
         } else if (TextUtils.isEmpty(message)) {
 
-            //TODO: could also be required to notify the user
             Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.emptyMessage));
+
+            //TODO: could also be required to notify the user
+            if (mqttConnectionInterface != null) {
+                mqttConnectionInterface.onMQTTPublishNoMessageError();
+            }
             return;
         } else {
 
             byte[] encodedPayload = new byte[0];
             if (client.isConnected()) {
                 try {
+                    int qos = 1;
                     encodedPayload = message.getBytes("UTF-8");
-                    MqttMessage messageToPublish = new MqttMessage(encodedPayload);
-                    client.publish(topic, messageToPublish);
+                    //MqttMessage messageToPublish = new MqttMessage(encodedPayload);
+
+                    pubToken = client.publish(topic, encodedPayload, qos, true);
+                    //pubToken.waitForCompletion(100);
                 } catch (UnsupportedEncodingException | MqttException e) {
                     e.printStackTrace();
                 }
             } else {
                 Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.somethingWentWrongDuringPublish));
+
+                //TODO: inform user connection have been terminated
+                //connectionLost(null);
             }
         }
     }
@@ -167,8 +215,12 @@ public class MQTTBaseService extends Service implements MqttCallback {
     public void subscribeMessage(final String topic) {
         if (TextUtils.isEmpty(topic)) {
 
-            //TODO: could also be required to notify the user
             Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.emptyTopic));
+
+            //TODO: could also be required to notify the user
+            if (mqttConnectionInterface != null) {
+                mqttConnectionInterface.onMQTTSubscribeNoTopicError();
+            }
             return;
         } else {
             int qos = 1;
@@ -179,12 +231,20 @@ public class MQTTBaseService extends Service implements MqttCallback {
                         @Override
                         public void onSuccess(IMqttToken asyncActionToken) {
                             Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.subscribeSuccess) + topic);
+
+                            if (mqttConnectionInterface != null) {
+                                mqttConnectionInterface.onMQTTSubscriptionSuccess();
+                            }
                         }
 
                         @Override
                         public void onFailure(IMqttToken asyncActionToken,
                                               Throwable exception) {
                             Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.subscribeFailed) + topic);
+
+                            if (mqttConnectionInterface != null) {
+                                mqttConnectionInterface.onMQTTSubscriptionError(exception.getMessage());
+                            }
 
                         }
                     });
@@ -204,6 +264,10 @@ public class MQTTBaseService extends Service implements MqttCallback {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
                         Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.connectionDisconnected));
+
+                        if (mqttConnectionInterface != null) {
+                            mqttConnectionInterface.onMQTTDisconnectSuccess();
+                        }
                     }
 
                     @Override
@@ -211,6 +275,10 @@ public class MQTTBaseService extends Service implements MqttCallback {
                                           Throwable exception) {
                         exception.printStackTrace();
                         Log.v(Constants.MQTT_CONNECTION, MQTTUtils.getContext().getString(R.string.connectionDisconnectError));
+
+                        if (mqttConnectionInterface != null) {
+                            mqttConnectionInterface.onMQTTDisconnectError(exception.getMessage());
+                        }
                     }
                 });
             } catch (MqttException e) {
