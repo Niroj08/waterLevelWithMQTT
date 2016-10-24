@@ -28,4 +28,8 @@
     <string name="previous"><![CDATA[<< Previous]]></string>
     <string name="addLocation"><![CDATA[Add Location >>]]></string>
     <string name="noInternet">No internet connection.</string>
+    <string name="deviceId">Device Serial ID</string>
+    <string name="alreadyRegistered">Already Registered</string>
+    <string name="login">Login</string>
+    <string name="back">Back</string>
 </resources>

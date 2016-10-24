@@ -27,10 +27,10 @@ import com.technotroop.mqttdemo.service.model.User;
 
 public class UserRegisterActivity extends AppCompatActivity implements UserRegisterInterface {
 
-    private RelativeLayout buttonEffect, containerUserDetails, containerUserAddress;
+    private RelativeLayout buttonEffect, containerUserDetails, containerUserAddress, containerAlreadyRegistered;
 
-    private TextView tourTitle, tourMessage, btnMore, btnRegister, btnAddLocation, btnPrevious;
-    private EditText emailId, firstName, lastName, phoneNo, address;
+    private TextView tourTitle, tourMessage, btnMore, btnRegister, btnAddLocation, btnPrevious,btnBack, textAlreadyRegistered, btnLogin;
+    private EditText emailId, firstName, lastName, phoneNo, address, alreadyRegisteredSN, alreadyRegisteredEmail;
     private ImageView imgWaterTank, imgRouter, imgIOS, imgAndroid, imgNotificationIOS, imgNotificationAndroid;
     private View linetitle;
     private Spinner city;
@@ -52,12 +52,17 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         btnRegister = (TextView) findViewById(R.id.btnRegister);
         btnAddLocation = (TextView) findViewById(R.id.btnAddLocation);
         btnPrevious = (TextView) findViewById(R.id.btnPrevious);
+        textAlreadyRegistered = (TextView) findViewById(R.id.textAlreadyRegistered);
+        btnLogin = (TextView) findViewById(R.id.btnLogin);
+        btnBack = (TextView) findViewById(R.id.btnBack);
 
         emailId = (EditText) findViewById(R.id.editTextEmail);
         firstName = (EditText) findViewById(R.id.editTextFirstName);
         lastName = (EditText) findViewById(R.id.editTextLastName);
         phoneNo = (EditText) findViewById(R.id.editTextPhone);
         address = (EditText) findViewById(R.id.editTextAddress);
+        alreadyRegisteredEmail = (EditText) findViewById(R.id.editTextAlreadyRegisteredEmail);
+        alreadyRegisteredSN = (EditText) findViewById(R.id.editTextAlreadyRegisteredSN);
 
         city = (Spinner) findViewById(R.id.spinnerCity);
 
@@ -75,6 +80,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         buttonEffect = (RelativeLayout) findViewById(R.id.viewEffect);
         containerUserDetails = (RelativeLayout) findViewById(R.id.containerUserDetail);
         containerUserAddress = (RelativeLayout) findViewById(R.id.containerUserAddress);
+        containerAlreadyRegistered = (RelativeLayout) findViewById(R.id.containerAlreadyRegistered);
 
         progressBarWater = (VerticalProgressBar) findViewById(R.id.progressWater);
 
@@ -363,11 +369,31 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
             }
         });
 
+        textAlreadyRegistered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                containerUserDetails.setVisibility(View.GONE);
+                containerUserAddress.setVisibility(View.GONE);
+                containerAlreadyRegistered.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                containerUserDetails.setVisibility(View.VISIBLE);
+                containerUserAddress.setVisibility(View.GONE);
+                containerAlreadyRegistered.setVisibility(View.GONE);
+            }
+        });
+
         btnAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 containerUserDetails.setVisibility(View.GONE);
                 containerUserAddress.setVisibility(View.VISIBLE);
+                containerAlreadyRegistered.setVisibility(View.GONE);
             }
         });
 
@@ -376,6 +402,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
             public void onClick(View v) {
                 containerUserAddress.setVisibility(View.GONE);
                 containerUserDetails.setVisibility(View.VISIBLE);
+                containerAlreadyRegistered.setVisibility(View.GONE);
             }
         });
 
@@ -416,6 +443,15 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                     phoneNo.setError(getString(R.string.invalidePhone));
                     return;
                 }
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = alreadyRegisteredEmail.getText().toString();
+                String sn = alreadyRegisteredSN.getText().toString();
+                //TODO: call the api to login the user
             }
         });
     }
