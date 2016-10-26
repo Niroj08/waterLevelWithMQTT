@@ -6,6 +6,7 @@ package com.technotroop.mqttdemo.service.model;
 
 public class WaterTank {
 
+    private String id;
     private String brandname;
     private String volume;
 
@@ -23,5 +24,13 @@ public class WaterTank {
 
     public void setVolume(String volume) {
         this.volume = volume;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -39,7 +39,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.activity.WaterTankListActivity" />
+        <activity
+            android:name=".view.activity.WaterTankListActivity"
+            android:label="@string/app_name">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
 

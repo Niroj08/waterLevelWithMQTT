@@ -419,6 +419,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
                 if (userRegisterController.isDataValidate(user) == UserValidation.TRUE) {
                     //TODO:proceed to service
+                    //launchNextActivity(WaterTankListActivity.class);
                     userRegisterController.registerUser(user, selectedCity);
 
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_EMAIL) {

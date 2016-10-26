@@ -4,15 +4,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.daimajia.easing.linear.Linear;
 import com.technotroop.mqttdemo.R;
 import com.technotroop.mqttdemo.service.model.WaterTank;
 import com.technotroop.mqttdemo.view.adapter.WaterTankAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +24,7 @@ import java.util.List;
  */
 
 
-public class WaterTankListActivity extends Activity {
+public class WaterTankListActivity extends AppCompatActivity {
 
     private ListView listViewTanks;
     private LinearLayout btnAddATank;
@@ -28,8 +32,8 @@ public class WaterTankListActivity extends Activity {
     private List<WaterTank> waterTank;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watertank);
 
         listViewTanks = (ListView) findViewById(R.id.listViewTanks);
@@ -49,10 +53,16 @@ public class WaterTankListActivity extends Activity {
         });
 
         WaterTank waterTankDemo = new WaterTank();
-        waterTankDemo.setBrandname("Test BrandName");
-        waterTankDemo.setVolume("Test Volume");
+        waterTank = new ArrayList<>();
 
-        waterTank.add(waterTankDemo);
+        for (int i = 0; i < 2; i++) {
+
+            waterTankDemo.setBrandname("Test BrandName " + i);
+            waterTankDemo.setVolume("Test Volume1 " + i);
+
+            waterTank.add(waterTankDemo);
+        }
+
 
         adapter = new WaterTankAdapter(waterTank);
         listViewTanks.setAdapter(adapter);
