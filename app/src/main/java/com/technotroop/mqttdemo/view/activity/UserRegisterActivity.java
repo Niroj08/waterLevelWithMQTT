@@ -41,7 +41,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     private View linetitle;
     private Spinner city;
 
-    private ProgressBar progressBarAddLocation;
+    private ProgressBar progressBar;
     private VerticalProgressBar progressBarWater;
 
     private Button btnBeginTour;
@@ -93,7 +93,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         containerAlreadyRegistered = (RelativeLayout) findViewById(R.id.containerAlreadyRegistered);
 
         progressBarWater = (VerticalProgressBar) findViewById(R.id.progressWater);
-        progressBarAddLocation = (ProgressBar) findViewById(R.id.progressBarUserRegisterAddLocation);
+        progressBar = (ProgressBar) findViewById(R.id.progressBarUserRegisterAddLocation);
 
         userRegisterController = new UserRegisterController(this);
         user = new User();
@@ -402,7 +402,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         btnAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBarAddLocation.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 MQTTUtils.disableUserInteraction(getWindow());
 
                 userRegisterController.getCities();
@@ -438,7 +438,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
                 if (userRegisterController.isDataValidate(user) == UserValidation.TRUE) {
 
-                    progressBarAddLocation.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
                     MQTTUtils.disableUserInteraction(getWindow());
 
                     userRegisterController.registerUser(user);
@@ -458,7 +458,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_ADDRESS) {
                     address.setError(getString(R.string.required));
                     return;
-                }  else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_DEVICE_ID) {
+                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_DEVICE_ID) {
                     deviceId.setError(getString(R.string.required));
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.INVALID_EMAIL) {
@@ -475,8 +475,12 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
             @Override
             public void onClick(View v) {
                 String email = alreadyRegisteredEmail.getText().toString();
-                String sn = alreadyRegisteredSN.getText().toString();
-                //TODO: call the api to login the user
+                String deviceID = alreadyRegisteredSN.getText().toString();
+
+                progressBar.setVisibility(View.VISIBLE);
+                MQTTUtils.disableUserInteraction(getWindow());
+
+                userRegisterController.userLogin(email, deviceID);
             }
         });
     }
@@ -502,22 +506,36 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         CustomSpinnerAdapter spinnerAdapter = new CustomSpinnerAdapter(this.cityList);
         city.setAdapter(spinnerAdapter);
 
-        progressBarAddLocation.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
         MQTTUtils.enableUserInteraction(getWindow());
     }
 
     @Override
     public void onErrorGetCities(String error) {
 
-        progressBarAddLocation.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
         MQTTUtils.enableUserInteraction(getWindow());
+    }
+
+    @Override
+    public void onLoginSuccess() {
+
+        progressBar.setVisibility(View.GONE);
+        MQTTUtils.enableUserInteraction(getWindow());
+
+        launchNextActivity(WaterTankListActivity.class);
+    }
+
+    @Override
+    public void onLoginError(String error) {
+
     }
 
     @Override
     public void onErrorNoConnection() {
 
-        if (progressBarAddLocation.getVisibility() == View.VISIBLE) {
-            progressBarAddLocation.setVisibility(View.GONE);
+        if (progressBar.getVisibility() == View.VISIBLE) {
+            progressBar.setVisibility(View.GONE);
             MQTTUtils.enableUserInteraction(getWindow());
         }
 

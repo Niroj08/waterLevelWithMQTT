@@ -164,4 +164,38 @@ public class UserRegisterController {
             }
         });
     }
+
+
+    public void userLogin(String emailID, String deviceId) {
+        userRegisterService.userLogin(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                try {
+                    ResponseBody responseBody = response.body();
+                    ResponseBody errorBody = response.errorBody();
+                    if (responseBody != null && errorBody == null) {
+
+                    } else {
+
+                        userRegister.onErrorGetCities("Error");
+                    }
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                if (t.getCause() instanceof SocketTimeoutException
+                        || t.getMessage().equalsIgnoreCase("Failed to connect to " + Constants.serverBaseURL)) {
+                    userRegister.onErrorNoConnection();
+                } else {
+
+                    userRegister.onErrorNoConnection();
+                }
+            }
+        }, emailID, deviceId);
+    }
 }

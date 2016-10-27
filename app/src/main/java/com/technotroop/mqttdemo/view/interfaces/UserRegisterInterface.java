@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by technotroop on 10/18/16.
  */
-public interface UserRegisterInterface  extends ConnectionError {
+public interface UserRegisterInterface extends ConnectionError {
 
     void onSuccessUserRegister(User user);
 
@@ -17,4 +17,8 @@ public interface UserRegisterInterface  extends ConnectionError {
     void onSuccessGetCities(ArrayList<City> cityList);
 
     void onErrorGetCities(String error);
+
+    void onLoginSuccess();
+
+    void onLoginError(String error);
 }

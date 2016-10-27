@@ -9,6 +9,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.POST;
 
 /**
  * Created by technotroop on 10/18/16.
@@ -47,6 +48,28 @@ public class UserRegisterService {
 
         // finally, execute the request
         Call<ResponseBody> call = getService.getCities();
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call,
+                                   Response<ResponseBody> response) {
+                responseBodyCallback.onResponse(call, response);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                responseBodyCallback.onFailure(call, t);
+            }
+        });
+    }
+
+    public void userLogin(final Callback<ResponseBody> responseBodyCallback, String userEmail, String deviceId) {
+        // create upload service client
+        PostService postService =
+                RetrofitConfig.createService(PostService.class);
+
+        // finally, execute the request
+        Call<ResponseBody> call = postService.userLogin(userEmail, deviceId);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
