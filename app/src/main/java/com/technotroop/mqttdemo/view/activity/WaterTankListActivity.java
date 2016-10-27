@@ -1,10 +1,12 @@
 package com.technotroop.mqttdemo.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -67,6 +69,18 @@ public class WaterTankListActivity extends AppCompatActivity implements WaterTan
         adapter = new WaterTankAdapter(this.waterTankList);
 
         listViewTanks.setAdapter(adapter);
+
+        listViewTanks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                launchActivity(WaterLevelActivity.class);
+            }
+        });
+    }
+
+    private void launchActivity(Class calledActivity) {
+        Intent intent = new Intent(this, calledActivity);
+        startActivity(intent);
     }
 
     @Override
