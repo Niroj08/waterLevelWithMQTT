@@ -426,8 +426,13 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                 user.setFirstName(firstName.getText().toString());
                 user.setLastName(lastName.getText().toString());
                 user.setPhoneNumber(phoneNo.getText().toString());
-                user.setCityId(String.valueOf(city.getSelectedItemId()));
+
+                View view = city.getSelectedView();
+                TextView cityId = (TextView) view.findViewById(R.id.idCity);
+
+                user.setCityId(cityId.getText().toString());
                 user.setAddress(address.getText().toString());
+
                 user.setWaterPumpControllerId(deviceId.getText().toString());
                 user.setIsActive(0);
 
