@@ -1,20 +1,18 @@
 package com.technotroop.mqttdemo.view.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.daimajia.easing.linear.Linear;
 import com.technotroop.mqttdemo.R;
+import com.technotroop.mqttdemo.controller.WaterTankController;
 import com.technotroop.mqttdemo.service.model.WaterTank;
 import com.technotroop.mqttdemo.view.adapter.WaterTankAdapter;
+import com.technotroop.mqttdemo.view.interfaces.WaterTankInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,20 +22,28 @@ import java.util.List;
  */
 
 
-public class WaterTankListActivity extends AppCompatActivity {
+public class WaterTankListActivity extends AppCompatActivity implements WaterTankInterface {
 
     private ListView listViewTanks;
     private LinearLayout btnAddATank;
     private WaterTankAdapter adapter;
-    private List<WaterTank> waterTank;
+    private ArrayList<WaterTank> waterTankList;
+
+    private WaterTankController waterTankController;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watertank);
 
+
         listViewTanks = (ListView) findViewById(R.id.listViewTanks);
 
+        listViewTanks.setVisibility(View.GONE);
+
+        waterTankController = new WaterTankController(this);
+
+        waterTankController.getWaterTanks();
         View footerView = ((LayoutInflater) getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.footer_addtank, null, false);
@@ -49,22 +55,27 @@ public class WaterTankListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //TODO: add a tank from user itself
             }
         });
+    }
 
-        WaterTank waterTankDemo = new WaterTank();
-        waterTank = new ArrayList<>();
+    @Override
+    public void onSuccessGetWaterTank(ArrayList<WaterTank> waterTankList) {
 
-        for (int i = 0; i < 2; i++) {
+        this.waterTankList = waterTankList;
+        adapter = new WaterTankAdapter(this.waterTankList);
 
-            waterTankDemo.setBrandname("Test BrandName " + i);
-            waterTankDemo.setVolume("Test Volume1 " + i);
-
-            waterTank.add(waterTankDemo);
-        }
-
-
-        adapter = new WaterTankAdapter(waterTank);
         listViewTanks.setAdapter(adapter);
+    }
+
+    @Override
+    public void onErrorGetWaterTank(String error) {
+
+    }
+
+    @Override
+    public void onErrorNoConnection() {
+
     }
 }

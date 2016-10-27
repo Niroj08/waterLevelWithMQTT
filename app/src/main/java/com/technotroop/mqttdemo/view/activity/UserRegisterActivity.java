@@ -11,6 +11,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,27 +20,35 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.nineoldandroids.animation.Animator;
 import com.technotroop.mqttdemo.R;
+import com.technotroop.mqttdemo.service.model.City;
+import com.technotroop.mqttdemo.utils.MQTTUtils;
 import com.technotroop.mqttdemo.utils.enums.UserValidation;
 import com.technotroop.mqttdemo.utils.VerticalProgressBar;
 import com.technotroop.mqttdemo.controller.UserRegisterController;
-import com.technotroop.mqttdemo.service.retrofit.UserRegisterInterface;
+import com.technotroop.mqttdemo.view.interfaces.UserRegisterInterface;
 import com.technotroop.mqttdemo.service.model.User;
+import com.technotroop.mqttdemo.view.adapter.CustomSpinnerAdapter;
+
+import java.util.ArrayList;
 
 public class UserRegisterActivity extends AppCompatActivity implements UserRegisterInterface {
 
     private RelativeLayout buttonEffect, containerUserDetails, containerUserAddress, containerAlreadyRegistered;
 
     private TextView tourTitle, tourMessage, btnMore, btnRegister, btnAddLocation, btnPrevious, btnBack, textAlreadyRegistered, btnLogin;
-    private EditText emailId, firstName, lastName, phoneNo, address, alreadyRegisteredSN, alreadyRegisteredEmail;
+    private EditText emailId, firstName, lastName, phoneNo, address, deviceId, alreadyRegisteredSN, alreadyRegisteredEmail;
     private ImageView imgWaterTank, imgRouter, imgIOS, imgAndroid, imgNotificationIOS, imgNotificationAndroid;
     private View linetitle;
     private Spinner city;
 
-    private Button btnBeginTour;
-
+    private ProgressBar progressBarAddLocation;
     private VerticalProgressBar progressBarWater;
+
+    private Button btnBeginTour;
     private UserRegisterController userRegisterController;
     private User user;
+
+    private ArrayList<City> cityList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +70,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         lastName = (EditText) findViewById(R.id.editTextLastName);
         phoneNo = (EditText) findViewById(R.id.editTextPhone);
         address = (EditText) findViewById(R.id.editTextAddress);
+        deviceId = (EditText) findViewById(R.id.editTextDeviceId);
         alreadyRegisteredEmail = (EditText) findViewById(R.id.editTextAlreadyRegisteredEmail);
         alreadyRegisteredSN = (EditText) findViewById(R.id.editTextAlreadyRegisteredSN);
 
@@ -83,6 +93,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         containerAlreadyRegistered = (RelativeLayout) findViewById(R.id.containerAlreadyRegistered);
 
         progressBarWater = (VerticalProgressBar) findViewById(R.id.progressWater);
+        progressBarAddLocation = (ProgressBar) findViewById(R.id.progressBarUserRegisterAddLocation);
 
         userRegisterController = new UserRegisterController(this);
         user = new User();
@@ -391,9 +402,10 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         btnAddLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                containerUserDetails.setVisibility(View.GONE);
-                containerUserAddress.setVisibility(View.VISIBLE);
-                containerAlreadyRegistered.setVisibility(View.GONE);
+                progressBarAddLocation.setVisibility(View.VISIBLE);
+                MQTTUtils.disableUserInteraction(getWindow());
+
+                userRegisterController.getCities();
             }
         });
 
@@ -409,18 +421,22 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 user.setEmail(emailId.getText().toString());
                 user.setFirstName(firstName.getText().toString());
                 user.setLastName(lastName.getText().toString());
                 user.setPhoneNumber(phoneNo.getText().toString());
+                user.setCityId(String.valueOf(city.getSelectedItemId()));
                 user.setAddress(address.getText().toString());
-
-                String selectedCity = String.valueOf(city.getSelectedItem());
+                user.setWaterPumpControllerId(deviceId.getText().toString());
+                user.setIsActive(0);
 
                 if (userRegisterController.isDataValidate(user) == UserValidation.TRUE) {
-                    //TODO:proceed to service
-                    //launchNextActivity(WaterTankListActivity.class);
-                    userRegisterController.registerUser(user, selectedCity);
+
+                    progressBarAddLocation.setVisibility(View.VISIBLE);
+                    MQTTUtils.disableUserInteraction(getWindow());
+
+                    userRegisterController.registerUser(user);
 
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_EMAIL) {
                     emailId.setError(getString(R.string.required));
@@ -436,6 +452,9 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_ADDRESS) {
                     address.setError(getString(R.string.required));
+                    return;
+                }  else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_DEVICE_ID) {
+                    deviceId.setError(getString(R.string.required));
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.INVALID_EMAIL) {
                     emailId.setError(getString(R.string.invalidEmail));
@@ -458,17 +477,44 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     }
 
     @Override
-    public void onSuccessUserRegister() {
+    public void onSuccessUserRegister(User user) {
         launchNextActivity(WaterTankListActivity.class);
     }
 
     @Override
-    public void onErrorUserRegister() {
+    public void onErrorUserRegister(String error) {
 
     }
 
     @Override
+    public void onSuccessGetCities(ArrayList<City> cityList) {
+        this.cityList = cityList;
+
+        containerUserDetails.setVisibility(View.GONE);
+        containerUserAddress.setVisibility(View.VISIBLE);
+        containerAlreadyRegistered.setVisibility(View.GONE);
+
+        CustomSpinnerAdapter spinnerAdapter = new CustomSpinnerAdapter(this.cityList);
+        city.setAdapter(spinnerAdapter);
+
+        progressBarAddLocation.setVisibility(View.GONE);
+        MQTTUtils.enableUserInteraction(getWindow());
+    }
+
+    @Override
+    public void onErrorGetCities(String error) {
+
+        progressBarAddLocation.setVisibility(View.GONE);
+        MQTTUtils.enableUserInteraction(getWindow());
+    }
+
+    @Override
     public void onErrorNoConnection() {
+
+        if (progressBarAddLocation.getVisibility() == View.VISIBLE) {
+            progressBarAddLocation.setVisibility(View.GONE);
+            MQTTUtils.enableUserInteraction(getWindow());
+        }
 
     }
 

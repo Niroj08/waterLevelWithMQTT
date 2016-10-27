@@ -1,21 +1,28 @@
 package com.technotroop.mqttdemo.service.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Created by technotroop on 10/24/16.
  */
 
-public class WaterTank {
+public class WaterTank implements Serializable {
 
     private String id;
-    private String brandname;
+    @SerializedName("brand_name")
+    private String brandName;
     private String volume;
+    private String height;
+    private String type;
 
-    public String getBrandname() {
-        return brandname;
+    public String getBrandName() {
+        return brandName;
     }
 
-    public void setBrandname(String brandname) {
-        this.brandname = brandname;
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
     public String getVolume() {
@@ -32,5 +39,21 @@ public class WaterTank {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

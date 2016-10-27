@@ -12,5 +12,5 @@ public class Constants {
     public static final String MQTT_RETAINED_WATERLEVEL = "MQTT_WATERLEVEL";
     public static final String MQTT = "MQTT";
 
-    public static String serverBaseURL = "http://www.google.com/";
+    public static String serverBaseURL = "http://192.168.0.16:8000/api/";
 }

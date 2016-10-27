@@ -2,13 +2,21 @@ package com.technotroop.mqttdemo.controller;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.technotroop.mqttdemo.service.model.City;
 import com.technotroop.mqttdemo.utils.Constants;
-import com.technotroop.mqttdemo.service.retrofit.UserRegisterInterface;
+import com.technotroop.mqttdemo.view.interfaces.UserRegisterInterface;
 import com.technotroop.mqttdemo.service.api.UserRegisterService;
 import com.technotroop.mqttdemo.utils.enums.UserValidation;
 import com.technotroop.mqttdemo.service.model.User;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -19,8 +27,10 @@ import retrofit2.Response;
  * Created by technotroop on 10/18/16.
  */
 public class UserRegisterController {
-    private UserRegisterService userRegisterService;
+    private UserRegisterService userRegisterService = new UserRegisterService();
     UserRegisterInterface userRegister;
+    City city;
+    ArrayList<City> cityList;
 
     public UserRegisterController(UserRegisterInterface userRegisterInterface) {
         userRegister = userRegisterInterface;
@@ -38,6 +48,8 @@ public class UserRegisterController {
             return UserValidation.REQUIRED_PHONE;
         } else if (TextUtils.isEmpty(user.getAddress())) {
             return UserValidation.REQUIRED_ADDRESS;
+        } else if (TextUtils.isEmpty(user.getWaterPumpControllerId())) {
+            return UserValidation.REQUIRED_DEVICE_ID;
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(user.getEmail()).matches()) {
             return UserValidation.INVALID_EMAIL;
         } else if (user.getPhoneNumber().length() != 10) {
@@ -46,9 +58,7 @@ public class UserRegisterController {
         return UserValidation.TRUE;
     }
 
-    public void registerUser(User user, String city) {
-        userRegisterService = new UserRegisterService();
-        userRegister.onSuccessUserRegister();
+    public void registerUser(User user) {
 
         userRegisterService.userRegister(new Callback<ResponseBody>() {
             @Override
@@ -58,8 +68,28 @@ public class UserRegisterController {
                     ResponseBody responseBody = response.body();
                     ResponseBody errorBody = response.errorBody();
                     if (responseBody != null && errorBody == null) {
+                        try {
+                            JSONObject responseObject = new JSONObject(response.body().string());
+                            if (responseObject.optString("status").equalsIgnoreCase("success")) {
 
+                                JSONObject data = responseObject.optJSONObject("data");
+
+                                Gson gson = new Gson();
+                                User user = gson.fromJson(String.valueOf(data), User.class);
+
+                                userRegister.onSuccessUserRegister(user);
+
+                            } else {
+
+                                //TODO: except status success
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
+                        userRegister.onErrorUserRegister("Error");
                     }
 
                 } catch (NullPointerException e) {
@@ -71,9 +101,67 @@ public class UserRegisterController {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 if (t.getCause() instanceof SocketTimeoutException
                         || t.getMessage().equalsIgnoreCase("Failed to connect to " + Constants.serverBaseURL)) {
+                    userRegister.onErrorNoConnection();
                 } else {
                 }
             }
-        }, user, city);
+        }, user);
+    }
+
+    public void getCities() {
+        userRegisterService.getCities(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                try {
+                    ResponseBody responseBody = response.body();
+                    ResponseBody errorBody = response.errorBody();
+                    if (responseBody != null && errorBody == null) {
+                        cityList = new ArrayList<City>();
+
+                        try {
+                            JSONObject responseObject = new JSONObject(response.body().string());
+                            Gson gson = new Gson();
+                            if (responseObject.optString("status").equalsIgnoreCase("success")) {
+                                JSONArray cities = responseObject.getJSONArray("cities");
+                                for (int i = 0; i < cities.length(); i++) {
+                                    city = new City();
+                                    JSONObject cityObject = cities.getJSONObject(i);
+                                    city = gson.fromJson(String.valueOf(cityObject), City.class);
+
+                                    cityList.add(city);
+                                }
+
+                                userRegister.onSuccessGetCities(cityList);
+                            } else {
+                                //TODO: except status success
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+
+                        userRegister.onErrorGetCities("Error");
+                    }
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                if (t.getCause() instanceof SocketTimeoutException
+                        || t.getMessage().equalsIgnoreCase("Failed to connect to " + Constants.serverBaseURL)) {
+                    userRegister.onErrorNoConnection();
+                } else {
+
+                    userRegister.onErrorNoConnection();
+                }
+            }
+        });
     }
 }

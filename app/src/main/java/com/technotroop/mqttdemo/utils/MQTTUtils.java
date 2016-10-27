@@ -3,6 +3,8 @@ package com.technotroop.mqttdemo.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.technotroop.mqttdemo.MQTTApplicaiton;
 
@@ -31,4 +33,15 @@ public class MQTTUtils {
         ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(getContext().CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
     }
+
+    public static void disableUserInteraction(Window window) {
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    public static void enableUserInteraction(Window window) {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+
 }

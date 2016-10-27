@@ -13,14 +13,14 @@ import retrofit2.http.POST;
 public interface PostService {
 
     @FormUrlEncoded
-    @POST("api/user_register")
+    @POST("users")
     Call<ResponseBody> registerUser(
-            @Field("userEmail") String userEmail,
-            @Field("userFirstName") String userFirstName,
-            @Field("userLastName") String userLastName,
-            @Field("userPhoneNo") String userPhoneNo,
+            @Field("email") String userEmail,
+            @Field("firstname") String userFirstName,
+            @Field("lastname") String userLastName,
+            @Field("phone_number") String userPhoneNo,
             @Field("address") String address,
-            @Field("city") String city,
-            @Field("userMobileDeviceId") String userMobileDeviceId,
-            @Field("userIOTDeviceId") String userIOTDeviceId);
+            @Field("city_id") String cityId,
+            @Field("is_active") String isUserActive,
+            @Field("water_pump_controller_id") String userIOTDeviceId);
 }

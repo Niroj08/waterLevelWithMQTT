@@ -23,10 +23,10 @@ public class User extends RealmObject implements Serializable {
     @SerializedName("phone_number")
     private String phoneNumber;
     private String address;
-    private String city;
+    @SerializedName("city_id")
+    private String cityId;
     @SerializedName("landline")
     private String landLine;
-
     //1 means active, 0 means has not been inactive
     @SerializedName("is_active")
     private int isActive;
@@ -97,12 +97,12 @@ public class User extends RealmObject implements Serializable {
         this.address = address;
     }
 
-    public String getCity() {
-        return city;
+    public String getCityId() {
+        return cityId;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
     }
 
     public String getLandLine() {
