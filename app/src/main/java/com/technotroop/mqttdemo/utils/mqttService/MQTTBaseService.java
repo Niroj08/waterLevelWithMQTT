@@ -135,11 +135,13 @@ public class MQTTBaseService extends Service implements MqttCallback {
                             //subscribe test topic color
                             subscribeMessage("aj_mjn/feeds/color");
                             //subscribe test topic seek
-                            subscribeMessage("aj_mjn/feeds/seek");
-                            //subscribe to test topic onoff
-                            subscribeMessage("aj_mjn/feeds/onoff");
+                            subscribeMessage(WaterLevelTopics.SEEK.toString());
+                            //subscribe to test topic device status
+                            subscribeMessage(WaterLevelTopics.DEVICE_STATUS.toString());
                             //subscribe to test topic water level
-                            subscribeMessage("aj_mjn/feeds/water_level");
+                            subscribeMessage(WaterLevelTopics.WATER_LEVEL.toString());
+                            //subscribe to test topic on off
+                            subscribeMessage(WaterLevelTopics.ON_OFF.toString());
                             //TODO: Subscribe to all topics after the connection is established
                         }
 

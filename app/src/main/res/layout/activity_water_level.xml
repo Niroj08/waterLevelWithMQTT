@@ -24,11 +24,40 @@
         android:progress="70"
         android:progressDrawable="@drawable/custom_progress" />
 
+    <Switch
+        android:id="@+id/switchDeviceStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:checked="false" />
+
     <ImageView
+        android:id="@+id/imgTank"
         android:layout_width="300dp"
         android:layout_height="400dp"
         android:layout_centerHorizontal="true"
         android:src="@drawable/water_tank" />
+
+    <TextView
+        android:id="@+id/textWaterTankDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/progressWater"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/tankDetails"
+        android:textColor="@color/textColor"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textWaterTankDesc"
+        android:layout_marginLeft="50dp"
+        android:text="@string/tankDetailsDesc"
+        android:textColor="@color/textColor" />
 
     <SeekBar
         android:id="@+id/seekBar"

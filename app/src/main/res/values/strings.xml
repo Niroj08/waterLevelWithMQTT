@@ -34,4 +34,6 @@
     <string name="back">Back</string>
     <string name="tankList">Registered tanks of</string>
     <string name="addTank">Add a tank</string>
+    <string name="tankDetails">Tank Details</string>
+    <string name="tankDetailsDesc">Type:\nHeight:\nVolume:</string>
 </resources>

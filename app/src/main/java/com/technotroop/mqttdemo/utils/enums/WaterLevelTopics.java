@@ -6,7 +6,7 @@ package com.technotroop.mqttdemo.utils.enums;
 
 public enum WaterLevelTopics {
 
-    WATER_LEVEL("aj_mjn/feeds/water_level"), ERROR_STATUS("aj_mjn/feeds/error_status"), DEVICE_STATUS("aj_mjn/feeds/device_status"), SEEK("aj_mjn/feeds/seek");
+    WATER_LEVEL("aj_mjn/feeds/water-level"), ERROR_STATUS("aj_mjn/feeds/error_status"), DEVICE_STATUS("aj_mjn/feeds/device_status"), SEEK("aj_mjn/feeds/seek"), ON_OFF("aj_mjn/feeds/onoff");
 
     private final String topics;
 

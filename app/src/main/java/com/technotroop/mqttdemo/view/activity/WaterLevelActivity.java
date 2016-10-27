@@ -2,26 +2,24 @@ package com.technotroop.mqttdemo.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.Switch;
 
 import com.technotroop.mqttdemo.R;
-import com.technotroop.mqttdemo.utils.Constants;
 import com.technotroop.mqttdemo.utils.MQTTUtils;
 import com.technotroop.mqttdemo.utils.VerticalProgressBar;
 import com.technotroop.mqttdemo.utils.enums.WaterLevelTopics;
 import com.technotroop.mqttdemo.utils.mqttService.MQTTBaseService;
 import com.technotroop.mqttdemo.view.interfaces.MQTTConnectionInterface;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-
 public class WaterLevelActivity extends AppCompatActivity implements MQTTConnectionInterface {
 
 
     public static VerticalProgressBar progressWaterLevel;
     public SeekBar seekBar;
+
+    private Switch switchDeviceStatus;
 
     private MQTTBaseService mqttBaseService;
 
@@ -33,6 +31,21 @@ public class WaterLevelActivity extends AppCompatActivity implements MQTTConnect
         mqttBaseService = new MQTTBaseService(this);
 
         progressWaterLevel = (VerticalProgressBar) findViewById(R.id.progressWater);
+        switchDeviceStatus = (Switch) findViewById(R.id.switchDeviceStatus);
+
+        switchDeviceStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+
+                    mqttBaseService.publishMessage(WaterLevelTopics.ON_OFF.toString(), "ON");
+                } else {
+
+                    mqttBaseService.publishMessage(WaterLevelTopics.ON_OFF.toString(), "OFF");
+                }
+            }
+        });
+
         seekBar = (SeekBar) findViewById(R.id.seekBar);
 
         progressWaterLevel.setProgress(MQTTUtils.getRetainedWaterLevel());
@@ -70,13 +83,23 @@ public class WaterLevelActivity extends AppCompatActivity implements MQTTConnect
     @Override
     public void onMessageReceived(String topic, String message) {
 
-        if (topic.equalsIgnoreCase(WaterLevelTopics.SEEK.toString())) {
+        if (topic.equalsIgnoreCase(WaterLevelTopics.SEEK.toString())
+                || topic.equalsIgnoreCase(WaterLevelTopics.WATER_LEVEL.toString())) {
             int waterLevel = Integer.parseInt(message);
 
             MQTTUtils.storeRetainedWaterLevel(waterLevel);
 
             if (progressWaterLevel != null) {
                 progressWaterLevel.setProgress(waterLevel);
+            }
+        } else if (topic.equalsIgnoreCase(WaterLevelTopics.DEVICE_STATUS.toString())
+                || topic.equalsIgnoreCase(WaterLevelTopics.ON_OFF.toString())) {
+
+            if (message.equalsIgnoreCase("on")) {
+
+                switchDeviceStatus.setChecked(true);
+            } else if (message.equalsIgnoreCase("off")) {
+                switchDeviceStatus.setChecked(false);
             }
         }
     }
