@@ -34,7 +34,7 @@ public class WaterTankController {
     public WaterTankController(WaterTankInterface waterTanInterface) {
         this.waterTankInterface = waterTanInterface;
     }
-1
+
     public void getWaterTanks() {
         waterTankService.getWaterTanks(new Callback<ResponseBody>() {
             @Override

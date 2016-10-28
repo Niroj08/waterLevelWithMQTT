@@ -31,6 +31,6 @@ public interface PostService {
                                  @Field("water_pump_controller_id") String deviceId);
 
     @FormUrlEncoded
-    @POST("waterlevel/")
-    Call<ResponseBody> getWaterTankHistory(@Field("water_pump_controller_id") String deviceId);
+    @POST("waterlevel/daily")
+    Call<ResponseBody> getWaterTankHistory(@Field("water_controller_id") String deviceId);
 }
