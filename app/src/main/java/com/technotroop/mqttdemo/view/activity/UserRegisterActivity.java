@@ -438,9 +438,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
                 if (userRegisterController.isDataValidate(user) == UserValidation.TRUE) {
 
-                    progressBar.setVisibility(View.VISIBLE);
-                    MQTTUtils.disableUserInteraction(getWindow());
-
+                    callServer();
                     userRegisterController.registerUser(user);
 
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_EMAIL) {
@@ -477,9 +475,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                 String email = alreadyRegisteredEmail.getText().toString();
                 String deviceID = alreadyRegisteredSN.getText().toString();
 
-                progressBar.setVisibility(View.VISIBLE);
-                MQTTUtils.disableUserInteraction(getWindow());
-
+                callServer();
                 userRegisterController.userLogin(email, deviceID);
             }
         });
@@ -487,12 +483,14 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
     @Override
     public void onSuccessUserRegister(User user) {
+        onServerResponse();
         launchNextActivity(WaterTankListActivity.class);
     }
 
     @Override
     public void onErrorUserRegister(String error) {
 
+        onServerResponse();
     }
 
     @Override
@@ -506,39 +504,48 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         CustomSpinnerAdapter spinnerAdapter = new CustomSpinnerAdapter(this.cityList);
         city.setAdapter(spinnerAdapter);
 
-        progressBar.setVisibility(View.GONE);
-        MQTTUtils.enableUserInteraction(getWindow());
+        onServerResponse();
     }
 
     @Override
     public void onErrorGetCities(String error) {
 
-        progressBar.setVisibility(View.GONE);
-        MQTTUtils.enableUserInteraction(getWindow());
+        onServerResponse();
     }
 
     @Override
     public void onLoginSuccess() {
 
-        progressBar.setVisibility(View.GONE);
-        MQTTUtils.enableUserInteraction(getWindow());
-
+        onServerResponse();
         launchNextActivity(WaterTankListActivity.class);
     }
 
     @Override
     public void onLoginError(String error) {
 
+        onServerResponse();
     }
 
     @Override
     public void onErrorNoConnection() {
 
         if (progressBar.getVisibility() == View.VISIBLE) {
-            progressBar.setVisibility(View.GONE);
-            MQTTUtils.enableUserInteraction(getWindow());
+
+            onServerResponse();
         }
 
+    }
+
+    private void onServerResponse() {
+
+        progressBar.setVisibility(View.GONE);
+        MQTTUtils.enableUserInteraction(getWindow());
+    }
+
+    private void callServer() {
+
+        progressBar.setVisibility(View.VISIBLE);
+        MQTTUtils.disableUserInteraction(getWindow());
     }
 
     private void launchNextActivity(Class calledClass) {

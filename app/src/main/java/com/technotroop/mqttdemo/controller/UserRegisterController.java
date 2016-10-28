@@ -135,6 +135,7 @@ public class UserRegisterController {
                                 userRegister.onSuccessGetCities(cityList);
                             } else {
                                 //TODO: except status success
+                                userRegister.onErrorGetCities("Error");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -176,9 +177,21 @@ public class UserRegisterController {
                     ResponseBody errorBody = response.errorBody();
                     if (responseBody != null && errorBody == null) {
 
-                    } else {
+                        try {
+                            JSONObject responseObject = new JSONObject(responseBody.string());
+                            if (responseObject.optString("status").equalsIgnoreCase("1")) {
+                                userRegister.onLoginSuccess();
+                            } else {
+                                userRegister.onLoginError("Error");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
-                        userRegister.onErrorGetCities("Error");
+                    } else {
+                        userRegister.onLoginError("Error");
                     }
 
                 } catch (NullPointerException e) {

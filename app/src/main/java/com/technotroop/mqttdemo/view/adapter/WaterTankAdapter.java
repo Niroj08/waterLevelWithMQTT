@@ -64,7 +64,7 @@ public class WaterTankAdapter extends BaseAdapter {
         WaterTank waterTank = waterTankList.get(position);
 
         vh.brandName.setText(waterTank.getBrandName());
-        vh.volume.setText(waterTank.getVolume());
+        vh.volume.setText("Volume: " + waterTank.getVolume());
 
         return convertView;
     }

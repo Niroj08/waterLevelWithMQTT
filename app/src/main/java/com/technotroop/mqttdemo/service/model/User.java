@@ -30,7 +30,7 @@ public class User extends RealmObject implements Serializable {
     //1 means active, 0 means has not been inactive
     @SerializedName("is_active")
     private int isActive;
-    @SerializedName("water_pump_controller_id")
+    @SerializedName("device_id")
     private String waterPumpControllerId;
 
     public String getFirstName() {

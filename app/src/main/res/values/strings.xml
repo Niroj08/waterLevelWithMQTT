@@ -36,4 +36,5 @@
     <string name="addTank">Add a tank</string>
     <string name="tankDetails">Tank Details</string>
     <string name="tankDetailsDesc">Type:\nHeight:\nVolume:</string>
+    <string name="history">View History</string>
 </resources>

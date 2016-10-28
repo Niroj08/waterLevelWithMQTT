@@ -25,7 +25,7 @@ public interface PostService {
             @Field("water_pump_controller_id") String userIOTDeviceId);
 
     @FormUrlEncoded
-    @POST("users")
+    @POST("users/login")
     Call<ResponseBody> userLogin(@Field("email") String userEmail,
-                                 @Field("device_id") String deviceId);
+                                 @Field("water_pump_controller_id") String deviceId);
 }

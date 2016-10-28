@@ -204,7 +204,8 @@
                         android:paddingTop="5dp"
                         android:singleLine="true"
                         android:textColor="@color/textColor"
-                        android:textColorHint="@color/hintColor" />
+                        android:textColorHint="@color/hintColor"
+                        android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <View
@@ -240,7 +241,8 @@
                             android:paddingTop="5dp"
                             android:singleLine="true"
                             android:textColor="@color/textColor"
-                            android:textColorHint="@color/hintColor" />
+                            android:textColorHint="@color/hintColor"
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -260,7 +262,8 @@
                             android:paddingTop="5dp"
                             android:singleLine="true"
                             android:textColor="@color/textColor"
-                            android:textColorHint="@color/hintColor" />
+                            android:textColorHint="@color/hintColor"
+                            android:textSize="14sp" />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
 
@@ -318,7 +321,8 @@
                                 android:paddingTop="5dp"
                                 android:singleLine="true"
                                 android:textColor="@color/textColor"
-                                android:textColorHint="@color/hintColor" />
+                                android:textColorHint="@color/hintColor"
+                                android:textSize="14sp" />
                         </android.support.design.widget.TextInputLayout>
 
                         <View
@@ -340,7 +344,8 @@
                         android:gravity="center"
                         android:padding="10dp"
                         android:text="@string/addLocation"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -354,7 +359,8 @@
                     android:paddingBottom="10dp"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
-                    android:text="@string/alreadyRegistered" />
+                    android:text="@string/alreadyRegistered"
+                    android:textSize="14sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -403,7 +409,8 @@
                         android:paddingTop="5dp"
                         android:singleLine="true"
                         android:textColor="@color/textColor"
-                        android:textColorHint="@color/hintColor" />
+                        android:textColorHint="@color/hintColor"
+                        android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <View
@@ -432,7 +439,8 @@
                         android:paddingTop="5dp"
                         android:singleLine="true"
                         android:textColor="@color/textColor"
-                        android:textColorHint="@color/hintColor" />
+                        android:textColorHint="@color/hintColor"
+                        android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <View
@@ -453,7 +461,8 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/register"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/btnPrevious"
@@ -466,7 +475,8 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/previous"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
 
             </RelativeLayout>
 
@@ -494,7 +504,8 @@
                         android:paddingTop="5dp"
                         android:singleLine="true"
                         android:textColor="@color/textColor"
-                        android:textColorHint="@color/hintColor" />
+                        android:textColorHint="@color/hintColor"
+                        android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <View
@@ -523,7 +534,8 @@
                         android:paddingTop="5dp"
                         android:singleLine="true"
                         android:textColor="@color/textColor"
-                        android:textColorHint="@color/hintColor" />
+                        android:textColorHint="@color/hintColor"
+                        android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -545,7 +557,8 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/back"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/btnLogin"
@@ -557,7 +570,8 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/login"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
 
             </RelativeLayout>
         </RelativeLayout>

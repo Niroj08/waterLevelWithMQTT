@@ -42,6 +42,10 @@ public class MQTTBaseService extends Service implements MqttCallback {
 
     private MQTTConnectionInterface mqttConnectionInterface;
 
+    public MQTTBaseService() {
+
+    }
+
     public MQTTBaseService(MQTTConnectionInterface connectionInterface) {
 
         String host = Constants.MQTT_HOST;

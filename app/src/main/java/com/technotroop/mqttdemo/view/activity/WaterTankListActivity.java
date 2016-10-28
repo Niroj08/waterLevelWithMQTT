@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.technotroop.mqttdemo.R;
 import com.technotroop.mqttdemo.controller.WaterTankController;
@@ -16,6 +17,7 @@ import com.technotroop.mqttdemo.service.model.WaterTank;
 import com.technotroop.mqttdemo.view.adapter.WaterTankAdapter;
 import com.technotroop.mqttdemo.view.interfaces.WaterTankInterface;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +35,15 @@ public class WaterTankListActivity extends AppCompatActivity implements WaterTan
 
     private WaterTankController waterTankController;
 
+    private ProgressBar progressBar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watertank);
 
-
         listViewTanks = (ListView) findViewById(R.id.listViewTanks);
+        progressBar = (ProgressBar) findViewById(R.id.progressWaterTank);
 
         listViewTanks.setVisibility(View.GONE);
 
@@ -66,6 +70,9 @@ public class WaterTankListActivity extends AppCompatActivity implements WaterTan
     public void onSuccessGetWaterTank(ArrayList<WaterTank> waterTankList) {
 
         this.waterTankList = waterTankList;
+        progressBar.setVisibility(View.GONE);
+        listViewTanks.setVisibility(View.VISIBLE);
+
         adapter = new WaterTankAdapter(this.waterTankList);
 
         listViewTanks.setAdapter(adapter);
@@ -73,13 +80,14 @@ public class WaterTankListActivity extends AppCompatActivity implements WaterTan
         listViewTanks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                launchActivity(WaterLevelActivity.class);
+                launchActivity(WaterLevelActivity.class, position);
             }
         });
     }
 
-    private void launchActivity(Class calledActivity) {
+    private void launchActivity(Class calledActivity, int position) {
         Intent intent = new Intent(this, calledActivity);
+        intent.putExtra("waterTankDetails", (Serializable) this.waterTankList.get(position));
         startActivity(intent);
     }
 

@@ -1,12 +1,16 @@
 package com.technotroop.mqttdemo.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.technotroop.mqttdemo.R;
+import com.technotroop.mqttdemo.service.model.WaterTank;
 import com.technotroop.mqttdemo.utils.MQTTUtils;
 import com.technotroop.mqttdemo.utils.VerticalProgressBar;
 import com.technotroop.mqttdemo.utils.enums.WaterLevelTopics;
@@ -16,12 +20,16 @@ import com.technotroop.mqttdemo.view.interfaces.MQTTConnectionInterface;
 public class WaterLevelActivity extends AppCompatActivity implements MQTTConnectionInterface {
 
 
-    public static VerticalProgressBar progressWaterLevel;
     public SeekBar seekBar;
+    private TextView textTankDesc;
+    private TextView labelHistory;
+    public static VerticalProgressBar progressWaterLevel;
 
     private Switch switchDeviceStatus;
 
     private MQTTBaseService mqttBaseService;
+
+    private WaterTank waterTank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +38,20 @@ public class WaterLevelActivity extends AppCompatActivity implements MQTTConnect
 
         mqttBaseService = new MQTTBaseService(this);
 
-        progressWaterLevel = (VerticalProgressBar) findViewById(R.id.progressWater);
-        switchDeviceStatus = (Switch) findViewById(R.id.switchDeviceStatus);
+        waterTank = (WaterTank) getIntent().getSerializableExtra("waterTankDetails");
 
+        textTankDesc = (TextView) findViewById(R.id.textTankDesc);
+        labelHistory = (TextView) findViewById(R.id.labelHistory);
+        switchDeviceStatus = (Switch) findViewById(R.id.switchDeviceStatus);
+        progressWaterLevel = (VerticalProgressBar) findViewById(R.id.progressWater);
+
+        labelHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchActivity(WaterLevelHistory.class);
+            }
+        });
+        textTankDesc.setText("Type: " + waterTank.getType() + "\nHeight: " + waterTank.getHeight() + "\nVolume: " + waterTank.getVolume());
         switchDeviceStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -152,5 +171,10 @@ public class WaterLevelActivity extends AppCompatActivity implements MQTTConnect
     @Override
     public void onMQTTSubscriptionError(String error) {
 
+    }
+
+    private void launchActivity(Class calledClass) {
+        Intent intent = new Intent(this, calledClass);
+        startActivity(intent);
     }
 }
