@@ -34,7 +34,7 @@ public class WaterTankController {
     public WaterTankController(WaterTankInterface waterTanInterface) {
         this.waterTankInterface = waterTanInterface;
     }
-
+1
     public void getWaterTanks() {
         waterTankService.getWaterTanks(new Callback<ResponseBody>() {
             @Override
@@ -49,7 +49,7 @@ public class WaterTankController {
                         try {
                             JSONObject responseObject = new JSONObject(response.body().string());
                             Gson gson = new Gson();
-                            if (responseObject.optString("status").equalsIgnoreCase("success")) {
+                            if (responseObject.optString("status").equalsIgnoreCase("1")) {
                                 JSONArray data = responseObject.getJSONArray("data");
                                 for (int i = 0; i < data.length(); i++) {
                                     waterTank = new WaterTank();

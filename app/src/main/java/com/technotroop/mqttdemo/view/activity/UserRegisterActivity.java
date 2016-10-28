@@ -36,7 +36,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     private RelativeLayout buttonEffect, containerUserDetails, containerUserAddress, containerAlreadyRegistered;
 
     private TextView tourTitle, tourMessage, btnMore, btnRegister, btnAddLocation, btnPrevious, btnBack, textAlreadyRegistered, btnLogin;
-    private EditText emailId, firstName, lastName, phoneNo, address, deviceId, alreadyRegisteredSN, alreadyRegisteredEmail;
+    private EditText emailId, firstName, lastName, phoneNo, landLine, address, deviceId, alreadyRegisteredSN, alreadyRegisteredEmail;
     private ImageView imgWaterTank, imgRouter, imgIOS, imgAndroid, imgNotificationIOS, imgNotificationAndroid;
     private View linetitle;
     private Spinner city;
@@ -69,6 +69,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         firstName = (EditText) findViewById(R.id.editTextFirstName);
         lastName = (EditText) findViewById(R.id.editTextLastName);
         phoneNo = (EditText) findViewById(R.id.editTextPhone);
+        landLine = (EditText) findViewById(R.id.editTextLandline);
         address = (EditText) findViewById(R.id.editTextAddress);
         deviceId = (EditText) findViewById(R.id.editTextDeviceId);
         alreadyRegisteredEmail = (EditText) findViewById(R.id.editTextAlreadyRegisteredEmail);
@@ -426,6 +427,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                 user.setFirstName(firstName.getText().toString());
                 user.setLastName(lastName.getText().toString());
                 user.setPhoneNumber(phoneNo.getText().toString());
+                user.setLandLine(landLine.getText().toString());
 
                 View view = city.getSelectedView();
                 TextView cityId = (TextView) view.findViewById(R.id.idCity);
@@ -452,6 +454,9 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_PHONE) {
                     phoneNo.setError(getString(R.string.required));
+                    return;
+                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_LANDLINE) {
+                    landLine.setError(getString(R.string.required));
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_ADDRESS) {
                     address.setError(getString(R.string.required));

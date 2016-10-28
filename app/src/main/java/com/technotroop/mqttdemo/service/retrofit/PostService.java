@@ -19,6 +19,7 @@ public interface PostService {
             @Field("firstname") String userFirstName,
             @Field("lastname") String userLastName,
             @Field("phone_number") String userPhoneNo,
+            @Field("landline") String userLandline,
             @Field("address") String address,
             @Field("city_id") String cityId,
             @Field("is_active") String isUserActive,
@@ -28,4 +29,8 @@ public interface PostService {
     @POST("users/login")
     Call<ResponseBody> userLogin(@Field("email") String userEmail,
                                  @Field("water_pump_controller_id") String deviceId);
+
+    @FormUrlEncoded
+    @POST("waterlevel/")
+    Call<ResponseBody> getWaterTankHistory(@Field("water_pump_controller_id") String deviceId);
 }

@@ -25,7 +25,12 @@ public class UserRegisterService {
         Call<ResponseBody> call = userRegisterService.registerUser(user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getPhoneNumber(), user.getAddress(), user.getCityId(), String.valueOf(user.getIsActive()), user.getWaterPumpControllerId());
+                user.getPhoneNumber(),
+                user.getLandLine(),
+                user.getAddress(),
+                user.getCityId(),
+                String.valueOf(user.getIsActive()),
+                user.getWaterPumpControllerId());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

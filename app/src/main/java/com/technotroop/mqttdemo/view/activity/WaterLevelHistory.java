@@ -4,23 +4,21 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.technotroop.mqttdemo.R;
 import com.technotroop.mqttdemo.controller.WaterLevelController;
 import com.technotroop.mqttdemo.service.model.WaterLevel;
-import com.technotroop.mqttdemo.utils.XValueFormatter;
+import com.technotroop.mqttdemo.view.interfaces.WaterLevelHistoryInterface;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
  * Created by technotroop on 10/28/16.
  */
 
-public class WaterLevelHistory extends Activity {
+public class WaterLevelHistory extends Activity implements WaterLevelHistoryInterface {
 
     private WaterLevelController waterLevelController;
 
@@ -32,7 +30,7 @@ public class WaterLevelHistory extends Activity {
         setContentView(R.layout.activity_waterlevel_history);
 
         barChart = (BarChart) findViewById(R.id.barChart);
-        waterLevelController = new WaterLevelController();
+        waterLevelController = new WaterLevelController(this);
 
         for (int i = 0; i < 10; i++) {
             WaterLevel waterLevel = new WaterLevel();
@@ -55,5 +53,15 @@ public class WaterLevelHistory extends Activity {
         barChart.setDescription(desc);
         barChart.setData(data);
         barChart.invalidate();
+    }
+
+    @Override
+    public void onSuccessGetWaterTankHistory(ArrayList<WaterLevelHistory> waterLevelHistoryList) {
+
+    }
+
+    @Override
+    public void onErrorGetWaterTankHistory(String error) {
+
     }
 }

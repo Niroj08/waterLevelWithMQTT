@@ -46,6 +46,8 @@ public class UserRegisterController {
             return UserValidation.REQUIRED_LASTNAME;
         } else if (TextUtils.isEmpty(user.getPhoneNumber())) {
             return UserValidation.REQUIRED_PHONE;
+        } else if (TextUtils.isEmpty(user.getLandLine())) {
+            return UserValidation.REQUIRED_LANDLINE;
         } else if (TextUtils.isEmpty(user.getAddress())) {
             return UserValidation.REQUIRED_ADDRESS;
         } else if (TextUtils.isEmpty(user.getWaterPumpControllerId())) {
@@ -70,7 +72,7 @@ public class UserRegisterController {
                     if (responseBody != null && errorBody == null) {
                         try {
                             JSONObject responseObject = new JSONObject(response.body().string());
-                            if (responseObject.optString("status").equalsIgnoreCase("success")) {
+                            if (responseObject.optString("status").equalsIgnoreCase("1")) {
 
                                 JSONObject data = responseObject.optJSONObject("data");
 
@@ -82,6 +84,7 @@ public class UserRegisterController {
                             } else {
 
                                 //TODO: except status success
+                                userRegister.onErrorUserRegister("Error");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -122,7 +125,7 @@ public class UserRegisterController {
                         try {
                             JSONObject responseObject = new JSONObject(response.body().string());
                             Gson gson = new Gson();
-                            if (responseObject.optString("status").equalsIgnoreCase("success")) {
+                            if (responseObject.optString("status").equalsIgnoreCase("1")) {
                                 JSONArray cities = responseObject.getJSONArray("cities");
                                 for (int i = 0; i < cities.length(); i++) {
                                     city = new City();
