@@ -38,4 +38,5 @@
     <string name="tankDetailsDesc">Type:\nHeight:\nVolume:</string>
     <string name="history">View History</string>
     <string name="landline">Landline</string>
+    <string name="invalidLandline">Invaid landline!</string>
 </resources>

@@ -2,9 +2,13 @@ package com.technotroop.mqttdemo.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.technotroop.mqttdemo.MQTTApplicaiton;
 
@@ -44,4 +48,14 @@ public class MQTTUtils {
     }
 
 
+    public static void showSnackBar(String message, View view) {
+        Snackbar snackbar = Snackbar
+                .make(view, message, Snackbar.LENGTH_LONG);
+
+        // Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
+    }
 }

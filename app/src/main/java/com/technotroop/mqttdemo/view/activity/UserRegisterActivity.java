@@ -38,7 +38,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     private TextView tourTitle, tourMessage, btnMore, btnRegister, btnAddLocation, btnPrevious, btnBack, textAlreadyRegistered, btnLogin;
     private EditText emailId, firstName, lastName, phoneNo, landLine, address, deviceId, alreadyRegisteredSN, alreadyRegisteredEmail;
     private ImageView imgWaterTank, imgRouter, imgIOS, imgAndroid, imgNotificationIOS, imgNotificationAndroid;
-    private View linetitle;
+    private View linetitle, contentView;
     private Spinner city;
 
     private ProgressBar progressBar;
@@ -95,6 +95,8 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
         progressBarWater = (VerticalProgressBar) findViewById(R.id.progressWater);
         progressBar = (ProgressBar) findViewById(R.id.progressBarUserRegisterAddLocation);
+
+        contentView = findViewById(android.R.id.content);
 
         userRegisterController = new UserRegisterController(this);
         user = new User();
@@ -440,35 +442,53 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
                 if (userRegisterController.isDataValidate(user) == UserValidation.TRUE) {
 
-                    callServer();
+                    UIOnServerCall();
                     userRegisterController.registerUser(user);
 
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_EMAIL) {
                     emailId.setError(getString(R.string.required));
+
+                    MQTTUtils.showSnackBar("Email cannot be empty.", contentView);
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_FIRSTNAME) {
                     firstName.setError(getString(R.string.required));
+
+                    MQTTUtils.showSnackBar("First name cannot be empty.", contentView);
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_LASTNAME) {
                     lastName.setError(getString(R.string.required));
+
+                    MQTTUtils.showSnackBar("Last name cannot be empty.", contentView);
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_PHONE) {
                     phoneNo.setError(getString(R.string.required));
+
+                    MQTTUtils.showSnackBar("Phone number cannot be empty.", contentView);
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_LANDLINE) {
                     landLine.setError(getString(R.string.required));
+
+                    MQTTUtils.showSnackBar("Landline cannot be empty.", contentView);
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_ADDRESS) {
                     address.setError(getString(R.string.required));
+
+                    MQTTUtils.showSnackBar("Address cannot be empty.", contentView);
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_DEVICE_ID) {
                     deviceId.setError(getString(R.string.required));
+
+                    MQTTUtils.showSnackBar("Device ID cannot be empty.", contentView);
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.INVALID_EMAIL) {
                     emailId.setError(getString(R.string.invalidEmail));
+
+                    MQTTUtils.showSnackBar("Invalid Email ID.", contentView);
                     return;
                 } else if (userRegisterController.isDataValidate(user) == UserValidation.INVALID_PHONE) {
                     phoneNo.setError(getString(R.string.invalidePhone));
+
+                    MQTTUtils.showSnackBar("Invalid Phone number.", contentView);
                     return;
                 }
             }
@@ -480,7 +500,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                 String email = alreadyRegisteredEmail.getText().toString();
                 String deviceID = alreadyRegisteredSN.getText().toString();
 
-                callServer();
+                UIOnServerCall();
                 userRegisterController.userLogin(email, deviceID);
             }
         });
@@ -488,14 +508,14 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
     @Override
     public void onSuccessUserRegister(User user) {
-        onServerResponse();
+        UIOnServerResponse();
         launchNextActivity(WaterTankListActivity.class);
     }
 
     @Override
     public void onErrorUserRegister(String error) {
 
-        onServerResponse();
+        UIOnServerResponse();
     }
 
     @Override
@@ -509,26 +529,26 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         CustomSpinnerAdapter spinnerAdapter = new CustomSpinnerAdapter(this.cityList);
         city.setAdapter(spinnerAdapter);
 
-        onServerResponse();
+        UIOnServerResponse();
     }
 
     @Override
     public void onErrorGetCities(String error) {
 
-        onServerResponse();
+        UIOnServerResponse();
     }
 
     @Override
     public void onLoginSuccess() {
 
-        onServerResponse();
+        UIOnServerResponse();
         launchNextActivity(WaterTankListActivity.class);
     }
 
     @Override
     public void onLoginError(String error) {
 
-        onServerResponse();
+        UIOnServerResponse();
     }
 
     @Override
@@ -536,18 +556,18 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
         if (progressBar.getVisibility() == View.VISIBLE) {
 
-            onServerResponse();
+            UIOnServerResponse();
         }
 
     }
 
-    private void onServerResponse() {
+    private void UIOnServerResponse() {
 
         progressBar.setVisibility(View.GONE);
         MQTTUtils.enableUserInteraction(getWindow());
     }
 
-    private void callServer() {
+    private void UIOnServerCall() {
 
         progressBar.setVisibility(View.VISIBLE);
         MQTTUtils.disableUserInteraction(getWindow());
