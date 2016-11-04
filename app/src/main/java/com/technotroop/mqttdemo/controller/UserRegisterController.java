@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.technotroop.mqttdemo.service.model.City;
 import com.technotroop.mqttdemo.utils.Constants;
+import com.technotroop.mqttdemo.utils.enums.ResponseStatus;
 import com.technotroop.mqttdemo.view.interfaces.UserRegisterInterface;
 import com.technotroop.mqttdemo.service.api.UserRegisterService;
 import com.technotroop.mqttdemo.utils.enums.UserValidation;
@@ -72,7 +73,7 @@ public class UserRegisterController {
                     if (responseBody != null && errorBody == null) {
                         try {
                             JSONObject responseObject = new JSONObject(response.body().string());
-                            if (responseObject.optString("status").equalsIgnoreCase("1")) {
+                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))) {
 
                                 JSONObject data = responseObject.optJSONObject("data");
 
@@ -125,7 +126,7 @@ public class UserRegisterController {
                         try {
                             JSONObject responseObject = new JSONObject(response.body().string());
                             Gson gson = new Gson();
-                            if (responseObject.optString("status").equalsIgnoreCase("1")) {
+                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))) {
                                 JSONArray cities = responseObject.getJSONArray("cities");
                                 for (int i = 0; i < cities.length(); i++) {
                                     city = new City();
@@ -182,7 +183,7 @@ public class UserRegisterController {
 
                         try {
                             JSONObject responseObject = new JSONObject(responseBody.string());
-                            if (responseObject.optString("status").equalsIgnoreCase("1")) {
+                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))) {
                                 userRegister.onLoginSuccess();
                             } else {
                                 userRegister.onLoginError("Error");

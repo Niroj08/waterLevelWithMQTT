@@ -5,6 +5,7 @@ import com.technotroop.mqttdemo.service.api.WaterTankService;
 import com.technotroop.mqttdemo.service.model.City;
 import com.technotroop.mqttdemo.service.model.WaterTank;
 import com.technotroop.mqttdemo.utils.Constants;
+import com.technotroop.mqttdemo.utils.enums.ResponseStatus;
 import com.technotroop.mqttdemo.view.interfaces.WaterTankInterface;
 
 import org.json.JSONArray;
@@ -49,7 +50,7 @@ public class WaterTankController {
                         try {
                             JSONObject responseObject = new JSONObject(response.body().string());
                             Gson gson = new Gson();
-                            if (responseObject.optString("status").equalsIgnoreCase("1")) {
+                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))) {
                                 JSONArray data = responseObject.getJSONArray("data");
                                 for (int i = 0; i < data.length(); i++) {
                                     waterTank = new WaterTank();

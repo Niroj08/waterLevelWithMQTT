@@ -5,6 +5,7 @@ import com.technotroop.mqttdemo.service.api.WaterLevelHistoryService;
 import com.technotroop.mqttdemo.service.data.WaterLevelDataService;
 import com.technotroop.mqttdemo.service.model.WaterLevel;
 import com.technotroop.mqttdemo.utils.Constants;
+import com.technotroop.mqttdemo.utils.enums.ResponseStatus;
 import com.technotroop.mqttdemo.view.interfaces.WaterLevelHistoryInterface;
 
 import org.json.JSONException;
@@ -44,7 +45,7 @@ public class WaterLevelController {
 
                         try {
                             JSONObject responseObject = new JSONObject(responseBody.string());
-                            if (responseObject.optString("status").equalsIgnoreCase("1")) {
+                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))) {
 
                             } else {
 
