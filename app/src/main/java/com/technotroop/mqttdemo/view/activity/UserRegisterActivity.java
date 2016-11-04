@@ -516,6 +516,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     public void onErrorUserRegister(String error) {
 
         UIOnServerResponse();
+        MQTTUtils.showSnackBar(getString(R.string.somethingWentWrong), contentView);
     }
 
     @Override
@@ -536,6 +537,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     public void onErrorGetCities(String error) {
 
         UIOnServerResponse();
+        MQTTUtils.showSnackBar(getString(R.string.somethingWentWrong), contentView);
     }
 
     @Override
@@ -549,6 +551,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     public void onLoginError(String error) {
 
         UIOnServerResponse();
+        MQTTUtils.showSnackBar(getString(R.string.somethingWentWrong), contentView);
     }
 
     @Override
@@ -557,6 +560,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         if (progressBar.getVisibility() == View.VISIBLE) {
 
             UIOnServerResponse();
+            MQTTUtils.showSnackBar(getString(R.string.noInternet), contentView);
         }
 
     }

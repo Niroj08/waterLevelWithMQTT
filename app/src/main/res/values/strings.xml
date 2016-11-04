@@ -39,4 +39,5 @@
     <string name="history">View History</string>
     <string name="landline">Landline</string>
     <string name="invalidLandline">Invaid landline!</string>
+    <string name="somethingWentWrong">Something went wrong.</string>
 </resources>
