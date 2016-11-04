@@ -41,4 +41,5 @@
     <string name="invalidLandline">Invaid landline!</string>
     <string name="somethingWentWrong">Something went wrong.</string>
     <string name="noDeviceID">Invalid Device Id. Please contact admin.</string>
+    <string name="userAlreadyExists"><![CDATA[Email & device ID already registered.]]></string>
 </resources>

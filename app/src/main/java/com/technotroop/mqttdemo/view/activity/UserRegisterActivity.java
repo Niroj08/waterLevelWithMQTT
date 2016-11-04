@@ -519,7 +519,11 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         if (error.equalsIgnoreCase("No device found. Please contact to Admin")) {
 
             MQTTUtils.showSnackBar(getString(R.string.noDeviceID), contentView);
-        } else {
+        } else if (error.equalsIgnoreCase("same email and device exists. please login")) {
+
+            MQTTUtils.showSnackBar(getString(R.string.userAlreadyExists), contentView);
+
+        }else {
             MQTTUtils.showSnackBar(getString(R.string.somethingWentWrong), contentView);
         }
     }
