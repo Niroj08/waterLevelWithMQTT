@@ -18,7 +18,7 @@ public interface UserRegisterInterface extends ConnectionError {
 
     void onErrorGetCities(String error);
 
-    void onLoginSuccess();
+    void onLoginSuccess(User user);
 
     void onLoginError(String error);
 }

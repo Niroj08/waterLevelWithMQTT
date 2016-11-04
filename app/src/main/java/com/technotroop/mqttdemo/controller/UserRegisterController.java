@@ -76,12 +76,17 @@ public class UserRegisterController {
                             if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))) {
 
                                 JSONObject data = responseObject.optJSONObject("data");
+                                if (data != null) {
+                                    Gson gson = new Gson();
+                                    User user = gson.fromJson(String.valueOf(data), User.class);
 
-                                Gson gson = new Gson();
-                                User user = gson.fromJson(String.valueOf(data), User.class);
+                                    userRegister.onSuccessUserRegister(user);
+                                }
 
-                                userRegister.onSuccessUserRegister(user);
+                            } else if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.ERROR))) {
 
+                                String message = responseObject.optString("message");
+                                userRegister.onErrorUserRegister(message);
                             } else {
 
                                 //TODO: except status success
@@ -126,7 +131,9 @@ public class UserRegisterController {
                         try {
                             JSONObject responseObject = new JSONObject(response.body().string());
                             Gson gson = new Gson();
-                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))) {
+                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))
+                                    || responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESSS))) {
+
                                 JSONArray cities = responseObject.getJSONArray("cities");
                                 for (int i = 0; i < cities.length(); i++) {
                                     city = new City();
@@ -183,8 +190,15 @@ public class UserRegisterController {
 
                         try {
                             JSONObject responseObject = new JSONObject(responseBody.string());
-                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))) {
-                                userRegister.onLoginSuccess();
+                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))
+                                    || responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESSS))) {
+
+                                JSONObject data = responseObject.optJSONObject("data");
+
+                                Gson gson = new Gson();
+                                User user = gson.fromJson(String.valueOf(data), User.class);
+
+                                userRegister.onLoginSuccess(user);
                             } else {
                                 userRegister.onLoginError("Error");
                             }

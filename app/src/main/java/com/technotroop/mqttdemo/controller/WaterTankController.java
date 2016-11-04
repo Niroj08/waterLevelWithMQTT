@@ -50,7 +50,9 @@ public class WaterTankController {
                         try {
                             JSONObject responseObject = new JSONObject(response.body().string());
                             Gson gson = new Gson();
-                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))) {
+                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))
+                                    || responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESSS)) ) {
+
                                 JSONArray data = responseObject.getJSONArray("data");
                                 for (int i = 0; i < data.length(); i++) {
                                     waterTank = new WaterTank();
@@ -63,6 +65,7 @@ public class WaterTankController {
                                 waterTankInterface.onSuccessGetWaterTank(waterTankList);
                             } else {
                                 //TODO: except status success
+                                waterTankInterface.onErrorGetWaterTank("ERROR");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

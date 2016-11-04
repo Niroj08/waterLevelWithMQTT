@@ -4,16 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.technotroop.mqttdemo.R;
 import com.technotroop.mqttdemo.controller.WaterTankController;
 import com.technotroop.mqttdemo.service.model.WaterTank;
+import com.technotroop.mqttdemo.utils.MQTTUtils;
 import com.technotroop.mqttdemo.view.adapter.WaterTankAdapter;
 import com.technotroop.mqttdemo.view.interfaces.WaterTankInterface;
 
@@ -28,6 +31,10 @@ import java.util.List;
 
 public class WaterTankListActivity extends AppCompatActivity implements WaterTankInterface {
 
+
+    private View contentView;
+    private String userName;
+    private TextView labelTitle;
     private ListView listViewTanks;
     private LinearLayout btnAddATank;
     private WaterTankAdapter adapter;
@@ -41,6 +48,15 @@ public class WaterTankListActivity extends AppCompatActivity implements WaterTan
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watertank);
+
+        contentView = findViewById(android.R.id.content);
+
+        userName = getIntent().getStringExtra("userName");
+
+        labelTitle = (TextView) findViewById(R.id.labelTitle);
+        if (!TextUtils.isEmpty(userName)) {
+            labelTitle.setText(getString(R.string.tankList) + " " + userName);
+        }
 
         listViewTanks = (ListView) findViewById(R.id.listViewTanks);
         progressBar = (ProgressBar) findViewById(R.id.progressWaterTank);
@@ -94,10 +110,13 @@ public class WaterTankListActivity extends AppCompatActivity implements WaterTan
     @Override
     public void onErrorGetWaterTank(String error) {
 
+        progressBar.setVisibility(View.GONE);
+        MQTTUtils.showSnackBar(getString(R.string.somethingWentWrong), contentView);
     }
 
     @Override
     public void onErrorNoConnection() {
 
+        MQTTUtils.showSnackBar(getString(R.string.noInternet), contentView);
     }
 }

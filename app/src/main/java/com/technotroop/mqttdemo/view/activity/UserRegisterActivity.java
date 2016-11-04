@@ -509,14 +509,19 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     @Override
     public void onSuccessUserRegister(User user) {
         UIOnServerResponse();
-        launchNextActivity(WaterTankListActivity.class);
+        launchNextActivity(WaterTankListActivity.class, user.getFirstName() + " " + user.getLastName());
     }
 
     @Override
     public void onErrorUserRegister(String error) {
 
         UIOnServerResponse();
-        MQTTUtils.showSnackBar(getString(R.string.somethingWentWrong), contentView);
+        if (error.equalsIgnoreCase("No device found. Please contact to Admin")) {
+
+            MQTTUtils.showSnackBar(getString(R.string.noDeviceID), contentView);
+        } else {
+            MQTTUtils.showSnackBar(getString(R.string.somethingWentWrong), contentView);
+        }
     }
 
     @Override
@@ -541,10 +546,10 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     }
 
     @Override
-    public void onLoginSuccess() {
+    public void onLoginSuccess(User user) {
 
         UIOnServerResponse();
-        launchNextActivity(WaterTankListActivity.class);
+        launchNextActivity(WaterTankListActivity.class, user.getFirstName() + " " + user.getLastName());
     }
 
     @Override
@@ -577,8 +582,9 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
         MQTTUtils.disableUserInteraction(getWindow());
     }
 
-    private void launchNextActivity(Class calledClass) {
+    private void launchNextActivity(Class calledClass, String userName) {
         Intent intent = new Intent(this, calledClass);
+        intent.putExtra("userName", userName);
         startActivity(intent);
     }
 }
