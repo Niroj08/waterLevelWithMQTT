@@ -48,6 +48,7 @@ public class WaterLevelActivity extends AppCompatActivity implements MQTTConnect
         labelHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 launchActivity(WaterLevelHistory.class);
             }
         });
@@ -175,6 +176,7 @@ public class WaterLevelActivity extends AppCompatActivity implements MQTTConnect
 
     private void launchActivity(Class calledClass) {
         Intent intent = new Intent(this, calledClass);
+        intent.putExtra("waterTankId", waterTank.getId());
         startActivity(intent);
     }
 }

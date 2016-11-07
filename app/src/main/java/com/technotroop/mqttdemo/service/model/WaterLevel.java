@@ -19,8 +19,9 @@ public class WaterLevel extends RealmObject implements Serializable {
     private float waterLevel;
 
     //x-value is the parameter for bar chart could be hour, day, month
-    @SerializedName("x-value")
     private float xValue;
+    @SerializedName("created_at")
+    private String createdAt;
 
     public String getId() {
         return id;
@@ -36,6 +37,14 @@ public class WaterLevel extends RealmObject implements Serializable {
 
     public void setWaterLevel(float waterLevel) {
         this.waterLevel = waterLevel;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public float getxValue() {

@@ -5,7 +5,7 @@ package com.technotroop.mqttdemo.utils.enums;
  */
 
 public enum ResponseStatus {
-    SUCCESS("1"), ERROR("0"), SUCCESSS("success");
+    SUCCESS("1"), ERROR("0");
 
     private final String response;
 

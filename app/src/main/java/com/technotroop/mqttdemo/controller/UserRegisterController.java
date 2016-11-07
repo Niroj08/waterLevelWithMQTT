@@ -131,8 +131,7 @@ public class UserRegisterController {
                         try {
                             JSONObject responseObject = new JSONObject(response.body().string());
                             Gson gson = new Gson();
-                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))
-                                    || responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESSS))) {
+                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))) {
 
                                 JSONArray cities = responseObject.getJSONArray("cities");
                                 for (int i = 0; i < cities.length(); i++) {
@@ -190,8 +189,7 @@ public class UserRegisterController {
 
                         try {
                             JSONObject responseObject = new JSONObject(responseBody.string());
-                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))
-                                    || responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESSS))) {
+                            if (responseObject.optString("status").equalsIgnoreCase(String.valueOf(ResponseStatus.SUCCESS))) {
 
                                 JSONObject data = responseObject.optJSONObject("data");
 

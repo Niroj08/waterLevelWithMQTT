@@ -1,7 +1,6 @@
 package com.technotroop.mqttdemo.service.api;
 
 import com.technotroop.mqttdemo.service.retrofit.GetService;
-import com.technotroop.mqttdemo.service.retrofit.PostService;
 import com.technotroop.mqttdemo.service.retrofit.RetrofitConfig;
 
 import okhttp3.ResponseBody;
@@ -15,11 +14,11 @@ import retrofit2.Response;
 public class WaterLevelHistoryService {
     public void waterTankHistory(final Callback<ResponseBody> responseBodyCallback, String waterTankId) {
         // create upload service client
-        PostService postService =
-                RetrofitConfig.createService(PostService.class);
+        GetService getService =
+                RetrofitConfig.createService(GetService.class);
 
         // finally, execute the request
-        Call<ResponseBody> call = postService.getWaterTankHistory(waterTankId);
+        Call<ResponseBody> call = getService.getWaterTankHistory(waterTankId);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

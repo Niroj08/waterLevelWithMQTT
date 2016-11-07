@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,71 +10,77 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.technotroop.mqttdemo.view.activity.WaterLevelActivity">
 
-    <com.technotroop.mqttdemo.utils.VerticalProgressBar
-        android:id="@+id/progressWater"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="228dp"
-        android:layout_height="242dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="98dp"
-        android:indeterminate="false"
-        android:max="100"
-        android:maxWidth="290dp"
-        android:minWidth="290dp"
-        android:progress="70"
-        android:progressDrawable="@drawable/custom_progress" />
+    <RelativeLayout
 
-    <Switch
-        android:id="@+id/switchDeviceStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:checked="false" />
-
-    <ImageView
-        android:id="@+id/imgTank"
-        android:layout_width="300dp"
-        android:layout_height="400dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/water_tank" />
-
-    <TextView
-        android:id="@+id/textWaterTankDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/progressWater"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/tankDetails"
-        android:textColor="@color/textColor"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/textTankDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textWaterTankDesc"
-        android:layout_marginLeft="50dp"
-        android:text="@string/tankDetailsDesc"
-        android:textColor="@color/textColor" />
-
-    <TextView
-        android:id="@+id/labelHistory"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textTankDesc"
-        android:layout_margin="20dp"
-        android:background="@drawable/background_button_blue"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/history"
-        android:textColor="@color/white" />
+        android:layout_height="match_parent">
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-</RelativeLayout>
+        <com.technotroop.mqttdemo.utils.VerticalProgressBar
+            android:id="@+id/progressWater"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="228dp"
+            android:layout_height="242dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="98dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:maxWidth="290dp"
+            android:minWidth="290dp"
+            android:progress="70"
+            android:progressDrawable="@drawable/custom_progress" />
+
+        <Switch
+            android:id="@+id/switchDeviceStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:checked="false" />
+
+        <ImageView
+            android:id="@+id/imgTank"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/water_tank" />
+
+        <TextView
+            android:id="@+id/textWaterTankDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progressWater"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/tankDetails"
+            android:textColor="@color/textColor"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textTankDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textWaterTankDesc"
+            android:layout_marginLeft="50dp"
+            android:text="@string/tankDetailsDesc"
+            android:textColor="@color/textColor" />
+
+        <TextView
+            android:id="@+id/labelHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textTankDesc"
+            android:layout_margin="20dp"
+            android:background="@drawable/background_button_blue"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/history"
+            android:textColor="@color/white" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+</ScrollView>

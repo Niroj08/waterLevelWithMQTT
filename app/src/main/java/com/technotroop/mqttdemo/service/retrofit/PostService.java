@@ -5,6 +5,8 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by technotroop on 10/18/16.
@@ -29,8 +31,4 @@ public interface PostService {
     @POST("users/login")
     Call<ResponseBody> userLogin(@Field("email") String userEmail,
                                  @Field("water_pump_controller_id") String deviceId);
-
-    @FormUrlEncoded
-    @POST("waterlevel/daily")
-    Call<ResponseBody> getWaterTankHistory(@Field("water_controller_id") String deviceId);
 }
