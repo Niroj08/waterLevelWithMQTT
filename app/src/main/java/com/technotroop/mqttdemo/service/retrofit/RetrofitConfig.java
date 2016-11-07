@@ -25,7 +25,7 @@ public class RetrofitConfig {
             .readTimeout(3, TimeUnit.MINUTES)
             .connectTimeout(3, TimeUnit.MINUTES)
             .writeTimeout(3, TimeUnit.MINUTES)
-            .retryOnConnectionFailure(false);
+            .retryOnConnectionFailure(true);
 
     private static Retrofit.Builder builder =
             new Retrofit.Builder()

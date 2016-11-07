@@ -56,9 +56,9 @@ public class WaterLevelHistory extends Activity implements WaterLevelHistoryInte
         UIOnServerResponse();
 
         RealmBarDataSet<WaterLevel> dataSet = waterLevelController.getBarChartDataForWaterLevel();
-        dataSet.setBarBorderWidth(2);
 
         BarData data = new BarData(dataSet);
+        data.setBarWidth(5);
 
         Description desc = new Description();
         desc.setText("Water Level history for: ");

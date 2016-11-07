@@ -1,7 +1,6 @@
 package com.technotroop.mqttdemo.controller;
 
 import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
-import com.github.mikephil.charting.data.realm.implementation.RealmLineDataSet;
 import com.google.gson.Gson;
 import com.technotroop.mqttdemo.service.api.WaterLevelHistoryService;
 import com.technotroop.mqttdemo.service.data.WaterLevelDataService;
@@ -20,7 +19,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 import io.realm.RealmResults;
 import okhttp3.ResponseBody;
@@ -71,7 +69,7 @@ public class WaterLevelController {
 
                                         long xValue = convertDateToTimeStampSeconds(waterLevelObject.optString("created_at"));
 
-                                        waterLevel.setxValue((xValue - refValue) / 1000);
+                                        waterLevel.setxValue((xValue - refValue) / 60000);
 
                                         storeWaterLevel(waterLevel);
                                     }

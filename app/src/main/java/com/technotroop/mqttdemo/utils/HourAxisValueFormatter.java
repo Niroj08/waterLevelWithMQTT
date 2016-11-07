@@ -39,7 +39,7 @@ public class HourAxisValueFormatter implements IAxisValueFormatter {
         long convertedTimestamp = (long) value;
 
         // Retrieve original timestamp
-        long originalTimestamp = referenceTimestamp + (convertedTimestamp * 1000);
+        long originalTimestamp = referenceTimestamp + (convertedTimestamp * 60000);
 
         // Convert timestamp to hour:minute
         return getHour(originalTimestamp);
