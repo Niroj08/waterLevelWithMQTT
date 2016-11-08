@@ -20,11 +20,11 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.nineoldandroids.animation.Animator;
 import com.technotroop.mqttdemo.R;
+import com.technotroop.mqttdemo.controller.UserRegisterController;
 import com.technotroop.mqttdemo.service.model.City;
 import com.technotroop.mqttdemo.utils.MQTTUtils;
 import com.technotroop.mqttdemo.utils.enums.UserValidation;
 import com.technotroop.mqttdemo.utils.VerticalProgressBar;
-import com.technotroop.mqttdemo.controller.UserRegisterController;
 import com.technotroop.mqttdemo.view.interfaces.UserRegisterInterface;
 import com.technotroop.mqttdemo.service.model.User;
 import com.technotroop.mqttdemo.view.adapter.CustomSpinnerAdapter;
@@ -45,7 +45,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     private VerticalProgressBar progressBarWater;
 
     private Button btnBeginTour;
-    private UserRegisterController userRegisterController;
+    private UserRegisterController userController;
     private User user;
 
     private ArrayList<City> cityList;
@@ -98,7 +98,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
 
         contentView = findViewById(android.R.id.content);
 
-        userRegisterController = new UserRegisterController(this);
+        userController = new UserRegisterController(this);
         user = new User();
 
         Animation fadeOut = new AlphaAnimation(1, 0);
@@ -408,7 +408,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                 progressBar.setVisibility(View.VISIBLE);
                 MQTTUtils.disableUserInteraction(getWindow());
 
-                userRegisterController.getCities();
+                userController.getCities();
             }
         });
 
@@ -440,52 +440,52 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                 user.setWaterPumpControllerId(deviceId.getText().toString());
                 user.setIsActive(0);
 
-                if (userRegisterController.isDataValidate(user) == UserValidation.TRUE) {
+                if (userController.isDataValidate(user) == UserValidation.TRUE) {
 
                     UIOnServerCall();
-                    userRegisterController.registerUser(user);
+                    userController.registerUser(user);
 
-                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_EMAIL) {
+                } else if (userController.isDataValidate(user) == UserValidation.REQUIRED_EMAIL) {
                     emailId.setError(getString(R.string.required));
 
                     MQTTUtils.showSnackBar("Email cannot be empty.", contentView);
                     return;
-                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_FIRSTNAME) {
+                } else if (userController.isDataValidate(user) == UserValidation.REQUIRED_FIRSTNAME) {
                     firstName.setError(getString(R.string.required));
 
                     MQTTUtils.showSnackBar("First name cannot be empty.", contentView);
                     return;
-                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_LASTNAME) {
+                } else if (userController.isDataValidate(user) == UserValidation.REQUIRED_LASTNAME) {
                     lastName.setError(getString(R.string.required));
 
                     MQTTUtils.showSnackBar("Last name cannot be empty.", contentView);
                     return;
-                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_PHONE) {
+                } else if (userController.isDataValidate(user) == UserValidation.REQUIRED_PHONE) {
                     phoneNo.setError(getString(R.string.required));
 
                     MQTTUtils.showSnackBar("Phone number cannot be empty.", contentView);
                     return;
-                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_LANDLINE) {
+                } else if (userController.isDataValidate(user) == UserValidation.REQUIRED_LANDLINE) {
                     landLine.setError(getString(R.string.required));
 
                     MQTTUtils.showSnackBar("Landline cannot be empty.", contentView);
                     return;
-                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_ADDRESS) {
+                } else if (userController.isDataValidate(user) == UserValidation.REQUIRED_ADDRESS) {
                     address.setError(getString(R.string.required));
 
                     MQTTUtils.showSnackBar("Address cannot be empty.", contentView);
                     return;
-                } else if (userRegisterController.isDataValidate(user) == UserValidation.REQUIRED_DEVICE_ID) {
+                } else if (userController.isDataValidate(user) == UserValidation.REQUIRED_DEVICE_ID) {
                     deviceId.setError(getString(R.string.required));
 
                     MQTTUtils.showSnackBar("Device ID cannot be empty.", contentView);
                     return;
-                } else if (userRegisterController.isDataValidate(user) == UserValidation.INVALID_EMAIL) {
+                } else if (userController.isDataValidate(user) == UserValidation.INVALID_EMAIL) {
                     emailId.setError(getString(R.string.invalidEmail));
 
                     MQTTUtils.showSnackBar("Invalid Email ID.", contentView);
                     return;
-                } else if (userRegisterController.isDataValidate(user) == UserValidation.INVALID_PHONE) {
+                } else if (userController.isDataValidate(user) == UserValidation.INVALID_PHONE) {
                     phoneNo.setError(getString(R.string.invalidePhone));
 
                     MQTTUtils.showSnackBar("Invalid Phone number.", contentView);
@@ -501,7 +501,7 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
                 String deviceID = alreadyRegisteredSN.getText().toString();
 
                 UIOnServerCall();
-                userRegisterController.userLogin(email, deviceID);
+                userController.userLogin(email, deviceID);
             }
         });
     }
@@ -509,6 +509,9 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     @Override
     public void onSuccessUserRegister(User user) {
         UIOnServerResponse();
+
+        MQTTUtils.storeUserId(user.getId());
+        
         launchNextActivity(WaterTankListActivity.class, user.getFirstName() + " " + user.getLastName());
     }
 

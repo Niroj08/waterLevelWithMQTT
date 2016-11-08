@@ -1,25 +1,20 @@
 package com.technotroop.mqttdemo.view.activity;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.technotroop.mqttdemo.R;
 import com.technotroop.mqttdemo.controller.WaterLevelController;
-import com.technotroop.mqttdemo.service.model.WaterLevel;
 import com.technotroop.mqttdemo.utils.HourAxisValueFormatter;
 import com.technotroop.mqttdemo.utils.MQTTUtils;
 import com.technotroop.mqttdemo.view.interfaces.WaterLevelHistoryInterface;

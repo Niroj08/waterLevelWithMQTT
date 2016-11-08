@@ -12,12 +12,12 @@ import retrofit2.Response;
  * Created by technotroop on 10/27/16.
  */
 public class WaterTankService {
-    public void getWaterTanks(final Callback<ResponseBody> responseBodyCallback) {
+    public void getWaterTanks(final Callback<ResponseBody> responseBodyCallback, String userId) {
         GetService getService =
                 RetrofitConfig.createService(GetService.class);
 
         // finally, execute the request
-        Call<ResponseBody> call = getService.getWaterTanks();
+        Call<ResponseBody> call = getService.getWaterTanks(userId);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

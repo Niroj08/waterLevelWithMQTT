@@ -14,8 +14,8 @@ public interface GetService {
     @GET("city")
     Call<ResponseBody> getCities();
 
-    @GET("watertank")
-    Call<ResponseBody> getWaterTanks();
+    @GET("watertank/{user_id}")
+    Call<ResponseBody> getWaterTanks(@Path("user_id") String userId);
 
     @GET("waterlevel/daily/{id}")
     Call<ResponseBody> getWaterTankHistory(@Path("id") String deviceId);

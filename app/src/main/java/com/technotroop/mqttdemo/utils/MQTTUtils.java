@@ -58,4 +58,16 @@ public class MQTTUtils {
         textView.setTextColor(Color.WHITE);
         snackbar.show();
     }
+
+    public static void storeUserId(String userId) {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_ID, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userId", userId);
+        editor.commit();
+    }
+
+    public static String getUserId() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.USER_ID, Context.MODE_PRIVATE);
+        return sharedPreferences.getString("userId", "");
+    }
 }

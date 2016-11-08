@@ -5,6 +5,7 @@ import com.technotroop.mqttdemo.service.api.WaterTankService;
 import com.technotroop.mqttdemo.service.model.City;
 import com.technotroop.mqttdemo.service.model.WaterTank;
 import com.technotroop.mqttdemo.utils.Constants;
+import com.technotroop.mqttdemo.utils.MQTTUtils;
 import com.technotroop.mqttdemo.utils.enums.ResponseStatus;
 import com.technotroop.mqttdemo.view.interfaces.WaterTankInterface;
 
@@ -92,6 +93,6 @@ public class WaterTankController {
                     waterTankInterface.onErrorNoConnection();
                 }
             }
-        });
+        }, MQTTUtils.getUserId());
     }
 }
