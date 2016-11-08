@@ -1,5 +1,6 @@
 package com.technotroop.mqttdemo.controller;
 
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
 import com.google.gson.Gson;
 import com.technotroop.mqttdemo.service.api.WaterLevelHistoryService;
@@ -17,8 +18,10 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import io.realm.RealmResults;
 import okhttp3.ResponseBody;
@@ -35,6 +38,7 @@ public class WaterLevelController {
     public WaterLevelHistoryService waterLevelHistoryService = new WaterLevelHistoryService();
     private WaterLevelHistoryInterface waterLevelHistoryInterface;
     private WaterLevel waterLevel;
+    List<Entry> entries = new ArrayList<Entry>();
 
     public WaterLevelController(WaterLevelHistoryInterface waterLevelHistoryInterface) {
         this.waterLevelHistoryInterface = waterLevelHistoryInterface;
@@ -71,13 +75,16 @@ public class WaterLevelController {
 
                                         waterLevel.setxValue((xValue - refValue) / 60000);
 
-                                        storeWaterLevel(waterLevel);
+
+                                        entries.add(new Entry(waterLevel.getxValue(), waterLevel.getWaterLevel()));
+                                        //storeWaterLevel(waterLevel);
                                     }
 
-                                    waterLevelHistoryInterface.onSuccessGetWaterTankHistory(refValue);
+
+                                    waterLevelHistoryInterface.onSuccessGetWaterTankHistory(refValue, entries);
                                 } else {
 
-                                    waterLevelHistoryInterface.onSuccessGetWaterTankHistory(0);
+                                    waterLevelHistoryInterface.onErrorGetWaterTankHistory("ERROR");
                                     //waterLevelHistoryInterface.noWaterLevelHistoryToShow();
                                 }
 

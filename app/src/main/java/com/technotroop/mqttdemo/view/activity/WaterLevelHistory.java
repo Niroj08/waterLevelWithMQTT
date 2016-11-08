@@ -1,15 +1,20 @@
 package com.technotroop.mqttdemo.view.activity;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.realm.implementation.RealmBarDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.technotroop.mqttdemo.R;
@@ -18,6 +23,8 @@ import com.technotroop.mqttdemo.service.model.WaterLevel;
 import com.technotroop.mqttdemo.utils.HourAxisValueFormatter;
 import com.technotroop.mqttdemo.utils.MQTTUtils;
 import com.technotroop.mqttdemo.view.interfaces.WaterLevelHistoryInterface;
+
+import java.util.List;
 
 /**
  * Created by technotroop on 10/28/16.
@@ -29,7 +36,7 @@ public class WaterLevelHistory extends Activity implements WaterLevelHistoryInte
     private ProgressBar progressBar;
     private WaterLevelController waterLevelController;
 
-    private BarChart barChart;
+    private LineChart barChart;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +45,7 @@ public class WaterLevelHistory extends Activity implements WaterLevelHistoryInte
 
         progressBar = (ProgressBar) findViewById(R.id.progressBarWaterLevelHistory);
 
-        barChart = (BarChart) findViewById(R.id.barChart);
+        barChart = (LineChart) findViewById(R.id.barChart);
         waterLevelController = new WaterLevelController(this);
 
         String waterTankId = getIntent().getStringExtra("waterTankId");
@@ -52,16 +59,21 @@ public class WaterLevelHistory extends Activity implements WaterLevelHistoryInte
     }
 
     @Override
-    public void onSuccessGetWaterTankHistory(long refValue) {
+    public void onSuccessGetWaterTankHistory(long refValue, List<Entry> entries) {
         UIOnServerResponse();
 
-        RealmBarDataSet<WaterLevel> dataSet = waterLevelController.getBarChartDataForWaterLevel();
+        // RealmBarDataSet<WaterLevel> dataSet = waterLevelController.getBarChartDataForWaterLevel();
 
-        BarData data = new BarData(dataSet);
-        data.setBarWidth(5);
+        LineDataSet dataSet = new LineDataSet(entries, "Water Level History for: ");
+        dataSet.setColor(getResources().getColor(R.color.colorPrimaryDark));
+        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSet.setFillColor(getResources().getColor(R.color.colorPrimary));
+        dataSet.setDrawFilled(true);
 
         Description desc = new Description();
-        desc.setText("Water Level history for: ");
+        desc.setText("");
+
+        LineData data = new LineData(dataSet);
 
         IAxisValueFormatter xAxisFormatter = new HourAxisValueFormatter(refValue);
 
@@ -72,8 +84,9 @@ public class WaterLevelHistory extends Activity implements WaterLevelHistoryInte
         barChart.setPinchZoom(false);
         barChart.setTouchEnabled(false);
         barChart.animateY(2000);
-        barChart.setDescription(desc);
         barChart.setData(data);
+        barChart.setDescription(desc);
+        barChart.invalidate();
 
     }
 
