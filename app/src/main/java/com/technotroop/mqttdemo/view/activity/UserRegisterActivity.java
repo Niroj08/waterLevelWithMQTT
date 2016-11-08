@@ -556,6 +556,9 @@ public class UserRegisterActivity extends AppCompatActivity implements UserRegis
     public void onLoginSuccess(User user) {
 
         UIOnServerResponse();
+
+        MQTTUtils.storeUserId(user.getId());
+
         launchNextActivity(WaterTankListActivity.class, user.getFirstName() + " " + user.getLastName());
     }
 
