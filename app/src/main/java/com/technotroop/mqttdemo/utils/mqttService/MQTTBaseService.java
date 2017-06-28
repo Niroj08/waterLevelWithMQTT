@@ -121,8 +121,8 @@ public class MQTTBaseService extends Service implements MqttCallback {
 
                 MqttConnectOptions options = new MqttConnectOptions();
                 //options.setCleanSession(true);
-                options.setUserName("aj_mjn");
-                options.setPassword("8abfc8bfc06d469f8f391ff15bd0ff79".toCharArray());
+                options.setUserName("your io.adafruit.com username");
+                options.setPassword("password".toCharArray());
 
                 try {
                     token = client.connect(options);
@@ -137,7 +137,7 @@ public class MQTTBaseService extends Service implements MqttCallback {
                             }
 
                             //subscribe test topic color
-                            subscribeMessage("aj_mjn/feeds/color");
+                            subscribeMessage("subscribe topic");
                             //subscribe test topic seek
                             subscribeMessage(WaterLevelTopics.SEEK.toString());
                             //subscribe to test topic device status
